@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class Form1
     Inherits System.Windows.Forms.Form
 
     'Form remplace la méthode Dispose pour nettoyer la liste des composants.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class Form1
     'REMARQUE : la procédure suivante est requise par le Concepteur Windows Form
     'Elle peut être modifiée à l'aide du Concepteur Windows Form.  
     'Ne la modifiez pas à l'aide de l'éditeur de code.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.ButtonPickFile = New System.Windows.Forms.Button()
         Me.ButtonPickFolder = New System.Windows.Forms.Button()
@@ -36,7 +36,7 @@ Partial Class Form1
         '
         Me.ButtonPickFile.Location = New System.Drawing.Point(12, 12)
         Me.ButtonPickFile.Name = "ButtonPickFile"
-        Me.ButtonPickFile.Size = New System.Drawing.Size(292, 31)
+        Me.ButtonPickFile.Size = New System.Drawing.Size(264, 31)
         Me.ButtonPickFile.TabIndex = 0
         Me.ButtonPickFile.Text = "Choisir le fichier contenant la slide à rajouter"
         Me.ButtonPickFile.UseVisualStyleBackColor = True
@@ -45,7 +45,7 @@ Partial Class Form1
         '
         Me.ButtonPickFolder.Location = New System.Drawing.Point(12, 49)
         Me.ButtonPickFolder.Name = "ButtonPickFolder"
-        Me.ButtonPickFolder.Size = New System.Drawing.Size(292, 31)
+        Me.ButtonPickFolder.Size = New System.Drawing.Size(264, 31)
         Me.ButtonPickFolder.TabIndex = 1
         Me.ButtonPickFolder.Text = "Choisir le dossier contenant les ppt à modifier"
         Me.ButtonPickFolder.UseVisualStyleBackColor = True
@@ -55,7 +55,7 @@ Partial Class Form1
         Me.IncludeSubFolder.AutoSize = True
         Me.IncludeSubFolder.Checked = True
         Me.IncludeSubFolder.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.IncludeSubFolder.Location = New System.Drawing.Point(337, 63)
+        Me.IncludeSubFolder.Location = New System.Drawing.Point(288, 63)
         Me.IncludeSubFolder.Name = "IncludeSubFolder"
         Me.IncludeSubFolder.Size = New System.Drawing.Size(140, 17)
         Me.IncludeSubFolder.TabIndex = 4
@@ -66,7 +66,7 @@ Partial Class Form1
         '
         Me.EndSlide.AutoSize = True
         Me.EndSlide.Checked = True
-        Me.EndSlide.Location = New System.Drawing.Point(327, 40)
+        Me.EndSlide.Location = New System.Drawing.Point(288, 40)
         Me.EndSlide.Name = "EndSlide"
         Me.EndSlide.Size = New System.Drawing.Size(165, 17)
         Me.EndSlide.TabIndex = 3
@@ -77,7 +77,7 @@ Partial Class Form1
         'StartSlide
         '
         Me.StartSlide.AutoSize = True
-        Me.StartSlide.Location = New System.Drawing.Point(322, 19)
+        Me.StartSlide.Location = New System.Drawing.Point(288, 19)
         Me.StartSlide.Name = "StartSlide"
         Me.StartSlide.Size = New System.Drawing.Size(176, 17)
         Me.StartSlide.TabIndex = 2
@@ -86,9 +86,9 @@ Partial Class Form1
         '
         'ButtonRun
         '
-        Me.ButtonRun.Location = New System.Drawing.Point(137, 102)
+        Me.ButtonRun.Location = New System.Drawing.Point(139, 102)
         Me.ButtonRun.Name = "ButtonRun"
-        Me.ButtonRun.Size = New System.Drawing.Size(355, 31)
+        Me.ButtonRun.Size = New System.Drawing.Size(353, 31)
         Me.ButtonRun.TabIndex = 5
         Me.ButtonRun.Text = "Lancer le rajout multiple"
         Me.ButtonRun.UseVisualStyleBackColor = True
@@ -97,7 +97,7 @@ Partial Class Form1
         '
         Me.ButtonExit.Location = New System.Drawing.Point(12, 102)
         Me.ButtonExit.Name = "ButtonExit"
-        Me.ButtonExit.Size = New System.Drawing.Size(107, 31)
+        Me.ButtonExit.Size = New System.Drawing.Size(121, 31)
         Me.ButtonExit.TabIndex = 6
         Me.ButtonExit.Text = "Quitter"
         Me.ButtonExit.UseVisualStyleBackColor = True
@@ -125,7 +125,7 @@ Partial Class Form1
         Me.Controls.Add(Me.ButtonPickFolder)
         Me.Controls.Add(Me.ButtonPickFile)
         Me.Name = "Form1"
-        Me.Text = "Form1"
+        Me.Text = "Multi Ajout PPT"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

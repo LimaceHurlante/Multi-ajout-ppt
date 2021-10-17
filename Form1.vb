@@ -7,8 +7,8 @@ Public Class Form1
     Public Shared PwP As PowerPoint.Application
     Public PresDeBase As PowerPoint.Presentation, SlideDeBase As PowerPoint.Slide
     Public PresAModifer As PowerPoint.Presentation, SlideAModifer As PowerPoint.Slide
-
-
+    'Pour le texte en anglais
+    Public SelectedFile As String, NoSelectedFile As String, ChoosePPTFile As String, FilterPPTFile As String, SelectedFolder As String, NoSelectedFolder As String, ChooseFolder As String
 
     Private Sub CheckIfReadyToGo()
         ButtonRun.Enabled = (Not String.IsNullOrEmpty(FicherPPTdeBASE)) And (Not String.IsNullOrEmpty(DossierExport))
@@ -22,23 +22,50 @@ Public Class Form1
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        Call LoadLanguage()
         Call CheckIfReadyToGo()
     End Sub
+    Private Sub LoadLanguage()
+        If Strings.LCase(Strings.Left(System.Globalization.CultureInfo.InstalledUICulture.Name, 2)) = "fr" Then
+            SelectedFile = "Vous avez selectionné ce fichier :"
+            NoSelectedFile = "Pas de fichier séléctioné ..."
+            ChoosePPTFile = "Choix du fichier PowerPoint à ajouter"
+            FilterPPTFile = "Fichiers PowerPoint|*.ppt;*.pptx;*.pptm"
+            SelectedFolder = "Vous avez selectionné ce dossier :"
+            NoSelectedFolder = "Pas de dossier séléctioné ..."
+            ChooseFolder = "Selectionnez le dossier dans lequel se trouvent les ppt à modifer"
 
+        Else
+            SelectedFile = "You selected this file:"
+            NoSelectedFile = "No selected file ..."
+            ChoosePPTFile = "Choose a PowerPoint file to add"
+            FilterPPTFile = "PowerPoint files|*.ppt;*.pptx;*.pptm"
+            SelectedFolder = "You selected this folder:"
+            NoSelectedFolder = "No selected folder ..."
+            ChooseFolder = "Select the folder where the ppt to modify are located"
+            ButtonPickFile.Text = "Pick the file containing the slide to add"
+            ButtonPickFolder.Text = "Pick the folder containing the ppt to modify"
+            ButtonExit.Text = "Quit"
+            ButtonRun.Text = "Launch multiple addition"
+            StartSlide.Text = "Add the slide at the start of the slide show"
+            EndSlide.Text = "Add the slide at the end of the slide show"
+            IncludeSubFolder.Text = "Include subfolders"
+        End If
+    End Sub
     Private Sub ButtonPickFile_Click(sender As Object, e As EventArgs) Handles ButtonPickFile.Click
         FicherPPTdeBASE = FileAddress()
         If FicherPPTdeBASE IsNot "" Then
-            MsgBox("Vous avez selectionné ce fichier :" & vbCrLf & FicherPPTdeBASE)
+            MsgBox(SelectedFile & vbCrLf & FicherPPTdeBASE)
         Else
-            MsgBox("Pas de fichier séléctioné ...")
+            MsgBox(NoSelectedFile)
         End If
         Call CheckIfReadyToGo()
     End Sub
     Private Function FileAddress() As String
         Dim ofd As New OpenFileDialog With {
             .Multiselect = False,
-            .Title = "Choix du fichier PowerPoint à ajouter",
-            .Filter = "Fichiers PowerPoint|*.ppt;*.pptx;*.pptm"
+            .Title = ChoosePPTFile,
+            .Filter = FilterPPTFile
         }
 
         If ofd.ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -47,21 +74,18 @@ Public Class Form1
             Return String.Empty
         End If
     End Function
-
-
-
     Private Sub ButtonPickFolder_Click(sender As Object, e As EventArgs) Handles ButtonPickFolder.Click
         DossierExport = FolderAddress()
         If DossierExport IsNot "" Then
-            MsgBox("Vous avez selectionné ce dossier :" & vbCrLf & DossierExport)
+            MsgBox(SelectedFolder & vbCrLf & DossierExport)
         Else
-            MsgBox("Pas de dossier séléctioné ...")
+            MsgBox(NoSelectedFolder)
         End If
         Call CheckIfReadyToGo()
     End Sub
     Private Function FolderAddress() As String
         Dim dlg As New FolderBrowserDialog With {
-            .Description = "Selectionnez le dossier dans lequel se trouvent les ppt à modifer"
+            .Description = ChooseFolder
         }
         If dlg.ShowDialog() = DialogResult.OK Then
             Dim path As String = dlg.SelectedPath
@@ -74,38 +98,26 @@ Public Class Form1
     Private Sub ButtonExit_Click(sender As Object, e As EventArgs) Handles ButtonExit.Click
         Application.Exit()
     End Sub
+
+    Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
+        MsgBox("Made by @ZacharieCortes", MsgBoxStyle.OkOnly Or MsgBoxStyle.Information, "Crédits") ', MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
+    End Sub
+
     Sub Main()
         'Start Powerpoint
         PwP = New PowerPoint.Application()
 
-
-
+        'copier la slide et refermer le fichier
         PresDeBase = PwP.Presentations.Open(FicherPPTdeBASE, , , False)
         PresDeBase.Slides(1).Copy()
-
-
-
-        'PresAModifer = PwP.Presentations.Open("C:\Users\zacha\Desktop\TEST.pptx", , , False)
-        'PresAModifer.Slides().Paste()
-        'PresAModifer.Save()
-        'PresAModifer.Close()
-        'PresAModifer = PwP.Presentations.Open("C:\Users\zacha\Desktop\TEST2.pptx", , , False)
-        'PresAModifer.Slides().Paste()
-        'PresAModifer.Save()
-        'PresAModifer.Close()
-
-
-
-        'Close the presentation without saving changes and quit PowerPoint.
         PresDeBase.Saved = True
         PresDeBase.Close()
         PresDeBase = Nothing
 
-
-
+        'boucle sur tout les fichiers
         Call ListFilesInFolder(DossierExport, IncludeSubFolder.Checked)
-        'Call test(FicherPPTdeBASE)
-        'Call test("C:\Users\zacha\Desktop\CREDITS DEF.pptx")
+
+        'on quitte pwp
         PwP.Quit()
         PwP = Nothing
         GC.Collect()
@@ -123,9 +135,6 @@ Public Class Form1
 
         PresAModifer.Save()
         PresAModifer.Close()
-
-
-
     End Sub
 
     Sub ListFilesInFolder(ByVal xFolderName As String, ByVal xIsSubfolders As Boolean)
@@ -155,6 +164,14 @@ Public Class Form1
     End Sub
 
 
+
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs)
+        MsgBox(GetOSLanguage())
+
+    End Sub
+    Public Function GetOSLanguage() As String
+        Return System.Globalization.CultureInfo.InstalledUICulture.Name
+    End Function
 
 End Class
 
