@@ -34,7 +34,7 @@ Partial Class Form1
         '
         'ButtonPickFile
         '
-        Me.ButtonPickFile.Location = New System.Drawing.Point(12, 12)
+        Me.ButtonPickFile.Location = New System.Drawing.Point(12, 49)
         Me.ButtonPickFile.Name = "ButtonPickFile"
         Me.ButtonPickFile.Size = New System.Drawing.Size(264, 31)
         Me.ButtonPickFile.TabIndex = 0
@@ -43,7 +43,7 @@ Partial Class Form1
         '
         'ButtonPickFolder
         '
-        Me.ButtonPickFolder.Location = New System.Drawing.Point(12, 49)
+        Me.ButtonPickFolder.Location = New System.Drawing.Point(12, 12)
         Me.ButtonPickFolder.Name = "ButtonPickFolder"
         Me.ButtonPickFolder.Size = New System.Drawing.Size(264, 31)
         Me.ButtonPickFolder.TabIndex = 1
