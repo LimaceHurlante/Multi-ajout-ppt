@@ -28,16 +28,31 @@ Public Class Form1
 
         Call LoadLanguage()
         Call CheckIfReadyToGo()
-        Call TestListe()
+        GroupBoxAjoutDeTransition.Left = GroupBoxAjoutDeSlide.Left
+        GroupBoxAjoutDeTransition.Top = GroupBoxAjoutDeSlide.Top
+        GroupBoxAjoutDeTransition.Visible = False
+        Me.Width = 325
+        'Call TestListe()
 
 
 
     End Sub
+
+    Private Sub RadioButtonAjoutTransitions_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonAjoutTransitions.CheckedChanged
+        If RadioButtonAjoutTransitions.Checked Then
+            GroupBoxAjoutDeSlide.Visible = False
+            GroupBoxAjoutDeTransition.Visible = True
+        Else
+            GroupBoxAjoutDeSlide.Visible = True
+            GroupBoxAjoutDeTransition.Visible = False
+        End If
+    End Sub
+
     Sub TestListe()
         'Call ListFilesInFolderTEST("C:\Users\zacha\Desktop\test2", True)
         'Dim ListeDeFichierTest2() = Split(ListeDeFichierTest, "|")
 
-        Form2.ShowDialog()
+        'Form2.ShowDialog()
 
     End Sub
     Private Sub LoadLanguage()
@@ -59,12 +74,12 @@ Public Class Form1
             NoSelectedFolder = "No selected folder ..."
             ChooseFolder = "Select the folder where the ppt to modify are located"
             ButtonPickFile.Text = "Pick the file containing the slide to add"
-            ButtonPickFolder.Text = "Pick the folder containing the ppt to modify"
+            ButtonPickFolder.Text = "Pick the ppt to modify"
             ButtonExit.Text = "Quit"
             ButtonRun.Text = "Launch multiple addition"
             StartSlide.Text = "Add the slide at the start of the slide show"
             EndSlide.Text = "Add the slide at the end of the slide show"
-            IncludeSubFolder.Text = "Include subfolders"
+            Form2.IncludeSubFolder.Text = "Include subfolders"
         End If
     End Sub
     Private Sub ButtonPickFile_Click(sender As Object, e As EventArgs) Handles ButtonPickFile.Click
@@ -90,13 +105,9 @@ Public Class Form1
         End If
     End Function
     Private Sub ButtonPickFolder_Click(sender As Object, e As EventArgs) Handles ButtonPickFolder.Click
-        DossierExport = FolderAddress()
-        If DossierExport IsNot "" Then
-            MsgBox(SelectedFolder & vbCrLf & DossierExport)
-        Else
-            MsgBox(NoSelectedFolder)
-        End If
-        Call CheckIfReadyToGo()
+        Form2.ShowDialog()
+        LabelDossierDeTravail.Text = Form2.DossierDeTravail
+        LabelNombreDeFichier.Text = Fichiers.Count & " fichiers à modifier"
     End Sub
     Private Function FolderAddress() As String
         Dim dlg As New FolderBrowserDialog With {
@@ -130,7 +141,7 @@ Public Class Form1
         PresDeBase = Nothing
 
         'boucle sur tout les fichiers
-        Call ListFilesInFolder(DossierExport, IncludeSubFolder.Checked)
+        Call ListFilesInFolder(DossierExport, Form2.IncludeSubFolder.Checked)
 
         'on quitte pwp
         PwP.Quit()

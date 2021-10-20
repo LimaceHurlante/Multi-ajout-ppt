@@ -1,5 +1,5 @@
 ﻿Public Class Form2
-    Public DossierExport As String = "", listeProvisoire
+    Public DossierDeTravail As String = "", dossierSauvegarde As String, checklistSauvegardeItemName As ArrayList, checklistSauvegardeItemChecked As ArrayList
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Me.Hide()
     End Sub
@@ -19,7 +19,7 @@
             If ext = ".ppt" Or ext = "pptx" Or ext = "pptm" Or ext = "ppsm" Then
                 'Debug.Print(xFile.name)
                 'Form1.Fichiers.Add(xFile.path)
-                CheckedListBox.Items.Add(Strings.Right(xFile.path, Strings.Len(xFile.path) - Strings.Len(DossierExport) - 1), True)
+                CheckedListBox.Items.Add(Strings.Right(xFile.path, Strings.Len(xFile.path) - Strings.Len(DossierDeTravail) - 1), True)
             End If
             'Call ajoutDeLaSlide(xFile)
         Next xFile
@@ -34,24 +34,28 @@
     End Sub
 
     Private Sub ButtonPickFolder_Click(sender As Object, e As EventArgs) Handles ButtonPickFolder.Click
-        DossierExport = FolderAddress()
-        If DossierExport IsNot "" Then
+        DossierDeTravail = FolderAddress()
+        Call ExploreLeDossier()
+
+
+    End Sub
+    Sub ExploreLeDossier()
+
+        If DossierDeTravail IsNot "" Then
             CheckedListBox.Items.Clear()
-            LabelDirectoryName.Text = DossierExport & " :"
-            Call ListFilesInFolder(DossierExport, True)
+            LabelDirectoryName.Text = DossierDeTravail & " :"
+            Call ListFilesInFolder(DossierDeTravail, IncludeSubFolder.Checked)
             If CheckedListBox.Items.Count > 0 Then
                 ButtonSelectAll.Enabled = True
                 ButtonUnselectAll.Enabled = True
                 LabelNombreDeFichier.Text = "Nombre de fichiers selectionné(s) : " & CheckedListBox.CheckedIndices.Count & "/" & CheckedListBox.Items.Count
             End If
         Else
-                MsgBox(Form1.NoSelectedFolder)
+            MsgBox(Form1.NoSelectedFolder)
         End If
 
         'Call CheckIfReadyToGo()
-
     End Sub
-
 
 
 
@@ -86,16 +90,44 @@
         LabelNombreDeFichier.Text = "Nombre de fichiers selectionné(s) : " & CheckedListBox.CheckedIndices.Count & "/" & CheckedListBox.Items.Count
     End Sub
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        'Form1.Fichiers.Add(CheckedListBox.SelectedItems)
-        For i As Integer = 0 To CheckedListBox.CheckedItems.Count - 1
-            Form1.Fichiers.Add(DossierExport & "\" & CheckedListBox.CheckedItems(i))
+    Private Sub IncludeSubFolder_CheckedChanged(sender As Object, e As EventArgs) Handles IncludeSubFolder.CheckedChanged
+        If DossierDeTravail IsNot "" Then
+            Call ExploreLeDossier()
+        End If
+    End Sub
 
+    Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        LabelDirectoryName.Text = ""
+    End Sub
+
+    Private Sub ButtonValider_Click(sender As Object, e As EventArgs) Handles ButtonValider.Click
+        If CheckedListBox.CheckedItems.Count > 0 Then Form1.Fichiers.Clear()
+        dossierSauvegarde = DossierDeTravail
+
+        For i As Integer = 0 To CheckedListBox.CheckedItems.Count - 1
+            Form1.Fichiers.Add(DossierDeTravail & "\" & CheckedListBox.CheckedItems(i))
         Next i
+
+
+
+
+
+
         Me.Hide()
     End Sub
 
+
+
     Private Sub CheckedListBox_ChangeUICues(sender As Object, e As UICuesEventArgs) Handles CheckedListBox.ChangeUICues
         LabelNombreDeFichier.Text = "Nombre de fichiers selectionné(s) : " & CheckedListBox.CheckedIndices.Count & "/" & CheckedListBox.Items.Count
+    End Sub
+
+
+    Private Sub Form2_Shown(sender As Object, e As EventArgs) Handles Me.Shown
+        If Not IsNothing(dossierSauvegarde) Then
+            DossierDeTravail = dossierSauvegarde
+            LabelDirectoryName.Text = DossierDeTravail & " :"
+            'CheckedListBox.Item = checklistSauvegarde
+        End If
     End Sub
 End Class

@@ -29,7 +29,8 @@ Partial Class Form2
         Me.ButtonSelectAll = New System.Windows.Forms.Button()
         Me.ButtonUnselectAll = New System.Windows.Forms.Button()
         Me.LabelNombreDeFichier = New System.Windows.Forms.Label()
-        Me.Button2 = New System.Windows.Forms.Button()
+        Me.ButtonValider = New System.Windows.Forms.Button()
+        Me.IncludeSubFolder = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'Button1
@@ -45,9 +46,9 @@ Partial Class Form2
         '
         Me.ButtonPickFolder.Location = New System.Drawing.Point(12, 12)
         Me.ButtonPickFolder.Name = "ButtonPickFolder"
-        Me.ButtonPickFolder.Size = New System.Drawing.Size(761, 38)
+        Me.ButtonPickFolder.Size = New System.Drawing.Size(615, 38)
         Me.ButtonPickFolder.TabIndex = 2
-        Me.ButtonPickFolder.Text = "pick Foldeer"
+        Me.ButtonPickFolder.Text = "Choisir le dossier dans lequel se trouvent les ppt"
         Me.ButtonPickFolder.UseVisualStyleBackColor = True
         '
         'CheckedListBox
@@ -96,21 +97,34 @@ Partial Class Form2
         Me.LabelNombreDeFichier.TabIndex = 7
         Me.LabelNombreDeFichier.Text = "Nombre de fichiers selectionné(s) : "
         '
-        'Button2
+        'ButtonValider
         '
-        Me.Button2.Location = New System.Drawing.Point(135, 358)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(638, 29)
-        Me.Button2.TabIndex = 8
-        Me.Button2.Text = "Valider"
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.ButtonValider.Location = New System.Drawing.Point(135, 358)
+        Me.ButtonValider.Name = "ButtonValider"
+        Me.ButtonValider.Size = New System.Drawing.Size(638, 29)
+        Me.ButtonValider.TabIndex = 8
+        Me.ButtonValider.Text = "Valider"
+        Me.ButtonValider.UseVisualStyleBackColor = True
+        '
+        'IncludeSubFolder
+        '
+        Me.IncludeSubFolder.AutoSize = True
+        Me.IncludeSubFolder.Checked = True
+        Me.IncludeSubFolder.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.IncludeSubFolder.Location = New System.Drawing.Point(633, 24)
+        Me.IncludeSubFolder.Name = "IncludeSubFolder"
+        Me.IncludeSubFolder.Size = New System.Drawing.Size(140, 17)
+        Me.IncludeSubFolder.TabIndex = 9
+        Me.IncludeSubFolder.Text = "Inclure les sous-dossiers"
+        Me.IncludeSubFolder.UseVisualStyleBackColor = True
         '
         'Form2
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(788, 398)
-        Me.Controls.Add(Me.Button2)
+        Me.Controls.Add(Me.IncludeSubFolder)
+        Me.Controls.Add(Me.ButtonValider)
         Me.Controls.Add(Me.LabelNombreDeFichier)
         Me.Controls.Add(Me.ButtonUnselectAll)
         Me.Controls.Add(Me.ButtonSelectAll)
@@ -119,7 +133,7 @@ Partial Class Form2
         Me.Controls.Add(Me.ButtonPickFolder)
         Me.Controls.Add(Me.Button1)
         Me.Name = "Form2"
-        Me.Text = "Form2"
+        Me.Text = "Choix des fichiers"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -132,5 +146,6 @@ Partial Class Form2
     Friend WithEvents ButtonSelectAll As Button
     Friend WithEvents ButtonUnselectAll As Button
     Friend WithEvents LabelNombreDeFichier As Label
-    Friend WithEvents Button2 As Button
+    Friend WithEvents ButtonValider As Button
+    Friend WithEvents IncludeSubFolder As CheckBox
 End Class
