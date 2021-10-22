@@ -107,22 +107,12 @@
         For i As Integer = 0 To CheckedListBox.CheckedItems.Count - 1
             Form1.Fichiers.Add(DossierDeTravail & "\" & CheckedListBox.CheckedItems(i))
         Next i
-
-
-
-
-
-
         Me.Hide()
     End Sub
-
-
 
     Private Sub CheckedListBox_ChangeUICues(sender As Object, e As UICuesEventArgs) Handles CheckedListBox.ChangeUICues
         LabelNombreDeFichier.Text = "Nombre de fichiers selectionné(s) : " & CheckedListBox.CheckedIndices.Count & "/" & CheckedListBox.Items.Count
     End Sub
-
-
     Private Sub Form2_Shown(sender As Object, e As EventArgs) Handles Me.Shown
         If Not IsNothing(dossierSauvegarde) Then
             DossierDeTravail = dossierSauvegarde

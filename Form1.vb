@@ -12,18 +12,10 @@ Public Class Form1
     Public SelectedFile As String, NoSelectedFile As String, ChoosePPTFile As String, FilterPPTFile As String, SelectedFolder As String, NoSelectedFolder As String, ChooseFolder As String
     ' TEST LISTE DE FICHIER
     Public Fichiers As New ArrayList()
+    Public FromSlideNo As Integer, ToSlideNo As Integer
 
 
-    Private Sub CheckIfReadyToGo()
-        ButtonRun.Enabled = (Not String.IsNullOrEmpty(FicherPPTdeBASE)) And (Not String.IsNullOrEmpty(DossierExport))
-        If ButtonRun.Enabled Then ButtonRun.Select()
-    End Sub
-    Private Sub ButtonRun_Click(sender As Object, e As EventArgs) Handles ButtonRun.Click
-
-        Call Main()
-
-    End Sub
-
+    'CHARGEMENT DE L'AFFICHAGE
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         Call LoadLanguage()
@@ -31,28 +23,8 @@ Public Class Form1
         GroupBoxAjoutDeTransition.Left = GroupBoxAjoutDeSlide.Left
         GroupBoxAjoutDeTransition.Top = GroupBoxAjoutDeSlide.Top
         GroupBoxAjoutDeTransition.Visible = False
+        LabelAttente.Visible = False
         Me.Width = 325
-        'Call TestListe()
-
-
-
-    End Sub
-
-    Private Sub RadioButtonAjoutTransitions_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonAjoutTransitions.CheckedChanged
-        If RadioButtonAjoutTransitions.Checked Then
-            GroupBoxAjoutDeSlide.Visible = False
-            GroupBoxAjoutDeTransition.Visible = True
-        Else
-            GroupBoxAjoutDeSlide.Visible = True
-            GroupBoxAjoutDeTransition.Visible = False
-        End If
-    End Sub
-
-    Sub TestListe()
-        'Call ListFilesInFolderTEST("C:\Users\zacha\Desktop\test2", True)
-        'Dim ListeDeFichierTest2() = Split(ListeDeFichierTest, "|")
-
-        'Form2.ShowDialog()
 
     End Sub
     Private Sub LoadLanguage()
@@ -82,12 +54,86 @@ Public Class Form1
             Form2.IncludeSubFolder.Text = "Include subfolders"
         End If
     End Sub
+
+    Private Sub CBBoxDebutACopier_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CBBoxDebutACopier.SelectedIndexChanged
+        VerifEtMiseAJourDesVariableDebutEtFinDeSlideACopier()
+        MiseAJourLabelNbDeSlidesSingulierPluriel()
+    End Sub
+    Private Sub CBBoxFinACopier_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CBBoxFinACopier.SelectedIndexChanged
+        VerifEtMiseAJourDesVariableDebutEtFinDeSlideACopier()
+        MiseAJourLabelNbDeSlidesSingulierPluriel()
+    End Sub
+
+    Private Sub VerifEtMiseAJourDesVariableDebutEtFinDeSlideACopier()
+        If CBBoxFinACopier.SelectedItem < CBBoxDebutACopier.SelectedItem Then
+            CBBoxFinACopier.SelectedItem = ToSlideNo
+            CBBoxDebutACopier.SelectedItem = FromSlideNo
+        Else
+            ToSlideNo = CBBoxFinACopier.SelectedItem
+            FromSlideNo = CBBoxDebutACopier.SelectedItem
+        End If
+    End Sub
+
+    Sub MiseAJourLabelNbDeSlidesSingulierPluriel()
+        If IsNumeric(CBBoxDebutACopier.SelectedItem) And IsNumeric(CBBoxFinACopier.SelectedItem) Then
+            StartSlide.Text = "Ajouter la slide au début des ppt"
+            If (CBBoxFinACopier.SelectedItem - CBBoxDebutACopier.SelectedItem + 1) > 1 Then
+                StartSlide.Text = "Ajouter les slides au début des ppt"
+            Else
+                StartSlide.Text = "Ajouter la slide au début des ppt"
+            End If
+        End If
+    End Sub
+
+
+    Private Sub RadioButtonAjoutTransitions_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonAjoutTransitions.CheckedChanged
+        If RadioButtonAjoutTransitions.Checked Then
+            GroupBoxAjoutDeSlide.Visible = False
+            GroupBoxAjoutDeTransition.Visible = True
+        Else
+            GroupBoxAjoutDeSlide.Visible = True
+            GroupBoxAjoutDeTransition.Visible = False
+        End If
+    End Sub
+
     Private Sub ButtonPickFile_Click(sender As Object, e As EventArgs) Handles ButtonPickFile.Click
         FicherPPTdeBASE = FileAddress()
+        Dim NbDeSlide As Integer
+
+        Dim NomDuFichierAAfficher As String
         If FicherPPTdeBASE IsNot "" Then
-            MsgBox(SelectedFile & vbCrLf & FicherPPTdeBASE)
+            If Len(FicherPPTdeBASE) < 48 Then
+                NomDuFichierAAfficher = FicherPPTdeBASE
+            Else
+                NomDuFichierAAfficher = "... " & Strings.LTrim(Strings.Right(FicherPPTdeBASE, 45))
+            End If
+            ButtonPickFile.Text = NomDuFichierAAfficher & vbCrLf & "Pour changer de fichier cliquer ici"
+            LabelAttente.Visible = True
+            NbDeSlide = NbSlide(FicherPPTdeBASE)
+            LabelAttente.Visible = False
+            LabelNbSlides.Text = "Ce fichier comprend " & NbDeSlide & " slides."
+            FromSlideNo = 1
+            ToSlideNo = NbDeSlide
+            For i = 1 To NbDeSlide
+                CBBoxDebutACopier.Items.Add(i)
+                CBBoxFinACopier.Items.Add(i)
+            Next
+            LabelNbSlides.Enabled = True
+            LabelQuellesSlidesCopier.Enabled = True
+            CBBoxDebutACopier.Enabled = True
+            CBBoxDebutACopier.SelectedIndex = 0
+            CBBoxFinACopier.Enabled = True
+            CBBoxFinACopier.SelectedIndex = CBBoxFinACopier.Items.Count - 1
+            MiseAJourLabelNbDeSlidesSingulierPluriel()
+
         Else
             MsgBox(NoSelectedFile)
+            ButtonPickFile.Text = "Pour choisir de fichier source cliquer ici"
+            LabelNbSlides.Text = "Ce fichier comprend  X slides."
+            LabelNbSlides.Enabled = False
+            LabelQuellesSlidesCopier.Enabled = False
+            CBBoxDebutACopier.Enabled = False
+            CBBoxFinACopier.Enabled = False
         End If
         Call CheckIfReadyToGo()
     End Sub
@@ -120,15 +166,35 @@ Public Class Form1
             Return String.Empty
         End If
     End Function
-
     Private Sub ButtonExit_Click(sender As Object, e As EventArgs) Handles ButtonExit.Click
         Application.Exit()
     End Sub
-
     Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
         MsgBox("Made by @ZacharieCortes", MsgBoxStyle.OkOnly Or MsgBoxStyle.Information, "Crédits") ', MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
     End Sub
+    Function NbSlide(fichierACompter As String) As Integer
+        'Start Powerpoint
+        PwP = New PowerPoint.Application()
+        PresDeBase = PwP.Presentations.Open(fichierACompter, , , False)
+        NbSlide = PresDeBase.Slides.Count
+        PresDeBase.Saved = True
+        PresDeBase.Close()
+        PresDeBase = Nothing
+        'on quitte pwp
+        PwP.Quit()
+        PwP = Nothing
+        GC.Collect()
+    End Function
 
+    Private Sub CheckIfReadyToGo()
+        ButtonRun.Enabled = (Not String.IsNullOrEmpty(FicherPPTdeBASE)) And (Not String.IsNullOrEmpty(DossierExport))
+        If ButtonRun.Enabled Then ButtonRun.Select()
+    End Sub
+    Private Sub ButtonRun_Click(sender As Object, e As EventArgs) Handles ButtonRun.Click
+
+        Call Main()
+
+    End Sub
     Sub Main()
         'Start Powerpoint
         PwP = New PowerPoint.Application()
@@ -141,7 +207,7 @@ Public Class Form1
         PresDeBase = Nothing
 
         'boucle sur tout les fichiers
-        Call ListFilesInFolder(DossierExport, Form2.IncludeSubFolder.Checked)
+        'Call ListFilesInFolder(DossierExport, Form2.IncludeSubFolder.Checked)
 
         'on quitte pwp
         PwP.Quit()
@@ -149,7 +215,6 @@ Public Class Form1
         GC.Collect()
         Me.Close()
     End Sub
-
     Sub OuvreColleLaSlideSauveEtFerme(nom As String)
 
         PresAModifer = PwP.Presentations.Open(nom, , , False)
@@ -163,34 +228,5 @@ Public Class Form1
         PresAModifer.Close()
     End Sub
 
-    Sub ListFilesInFolder(ByVal xFolderName As String, ByVal xIsSubfolders As Boolean)
-        Dim xFileSystemObject As Object
-        Dim xFolder As Object
-        Dim xSubFolder As Object
-        Dim xFile As Object
-        xFileSystemObject = CreateObject("Scripting.FileSystemObject")
-        xFolder = xFileSystemObject.GetFolder(xFolderName)
-
-        For Each xFile In xFolder.Files
-            Dim ext = Microsoft.VisualBasic.Right(xFile.name, 4)
-            If ext = ".ppt" Or ext = "pptx" Or ext = "pptm" Or ext = "ppsm" Then
-                Debug.Print(xFile.name)
-                Call OuvreColleLaSlideSauveEtFerme(xFile.path)
-            End If
-            'Call ajoutDeLaSlide(xFile)
-        Next xFile
-        If xIsSubfolders Then
-            For Each xSubFolder In xFolder.SubFolders
-                Call ListFilesInFolder(xSubFolder.Path, True)
-            Next xSubFolder
-        End If
-        xFile = Nothing
-        xFolder = Nothing
-        xFileSystemObject = Nothing
-    End Sub
-
-    Public Function GetOSLanguage() As String
-        Return System.Globalization.CultureInfo.InstalledUICulture.Name
-    End Function
 
 End Class

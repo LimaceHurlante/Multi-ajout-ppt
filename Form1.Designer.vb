@@ -33,21 +33,28 @@ Partial Class Form1
         Me.LabelDossierDeTravail = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.LabelNombreDeFichier = New System.Windows.Forms.Label()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.GroupBoxChoixDuDossier = New System.Windows.Forms.GroupBox()
         Me.GroupBoxAjoutDeSlide = New System.Windows.Forms.GroupBox()
+        Me.CBBoxFinACopier = New System.Windows.Forms.ComboBox()
+        Me.CBBoxDebutACopier = New System.Windows.Forms.ComboBox()
+        Me.LabelQuellesSlidesCopier = New System.Windows.Forms.Label()
+        Me.LabelNbSlides = New System.Windows.Forms.Label()
         Me.RadioButtonAjoutSlide = New System.Windows.Forms.RadioButton()
         Me.RadioButtonAjoutTransitions = New System.Windows.Forms.RadioButton()
         Me.GroupBoxAjoutDeTransition = New System.Windows.Forms.GroupBox()
-        Me.GroupBox1.SuspendLayout()
+        Me.LabelAttente = New System.Windows.Forms.Label()
+        Me.LabelTBC = New System.Windows.Forms.Label()
+        Me.GroupBoxChoixDuDossier.SuspendLayout()
         Me.GroupBoxAjoutDeSlide.SuspendLayout()
+        Me.GroupBoxAjoutDeTransition.SuspendLayout()
         Me.SuspendLayout()
         '
         'ButtonPickFile
         '
         Me.ButtonPickFile.Location = New System.Drawing.Point(9, 19)
         Me.ButtonPickFile.Name = "ButtonPickFile"
-        Me.ButtonPickFile.Size = New System.Drawing.Size(269, 31)
-        Me.ButtonPickFile.TabIndex = 0
+        Me.ButtonPickFile.Size = New System.Drawing.Size(269, 41)
+        Me.ButtonPickFile.TabIndex = 4
         Me.ButtonPickFile.Text = "Choisir le fichier contenant la slide à rajouter"
         Me.ButtonPickFile.UseVisualStyleBackColor = True
         '
@@ -64,10 +71,10 @@ Partial Class Form1
         '
         Me.EndSlide.AutoSize = True
         Me.EndSlide.Checked = True
-        Me.EndSlide.Location = New System.Drawing.Point(14, 116)
+        Me.EndSlide.Location = New System.Drawing.Point(14, 148)
         Me.EndSlide.Name = "EndSlide"
         Me.EndSlide.Size = New System.Drawing.Size(165, 17)
-        Me.EndSlide.TabIndex = 3
+        Me.EndSlide.TabIndex = 8
         Me.EndSlide.TabStop = True
         Me.EndSlide.Text = "Ajouter la slide à la fin des ppt"
         Me.EndSlide.UseVisualStyleBackColor = True
@@ -75,10 +82,10 @@ Partial Class Form1
         'StartSlide
         '
         Me.StartSlide.AutoSize = True
-        Me.StartSlide.Location = New System.Drawing.Point(14, 95)
+        Me.StartSlide.Location = New System.Drawing.Point(14, 127)
         Me.StartSlide.Name = "StartSlide"
         Me.StartSlide.Size = New System.Drawing.Size(176, 17)
-        Me.StartSlide.TabIndex = 2
+        Me.StartSlide.TabIndex = 7
         Me.StartSlide.Text = "Ajouter la slide au début des ppt"
         Me.StartSlide.UseVisualStyleBackColor = True
         '
@@ -87,7 +94,7 @@ Partial Class Form1
         Me.ButtonRun.Location = New System.Drawing.Point(140, 360)
         Me.ButtonRun.Name = "ButtonRun"
         Me.ButtonRun.Size = New System.Drawing.Size(156, 31)
-        Me.ButtonRun.TabIndex = 5
+        Me.ButtonRun.TabIndex = 9
         Me.ButtonRun.Text = "Lancer le rajout multiple"
         Me.ButtonRun.UseVisualStyleBackColor = True
         '
@@ -96,7 +103,7 @@ Partial Class Form1
         Me.ButtonExit.Location = New System.Drawing.Point(12, 360)
         Me.ButtonExit.Name = "ButtonExit"
         Me.ButtonExit.Size = New System.Drawing.Size(121, 31)
-        Me.ButtonExit.TabIndex = 6
+        Me.ButtonExit.TabIndex = 10
         Me.ButtonExit.Text = "Quitter"
         Me.ButtonExit.UseVisualStyleBackColor = True
         '
@@ -106,7 +113,7 @@ Partial Class Form1
         Me.Label1.Location = New System.Drawing.Point(283, 394)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(13, 13)
-        Me.Label1.TabIndex = 7
+        Me.Label1.TabIndex = 11
         Me.Label1.Text = "?"
         '
         'Label2
@@ -147,22 +154,27 @@ Partial Class Form1
         Me.LabelNombreDeFichier.TabIndex = 11
         Me.LabelNombreDeFichier.Text = "-"
         '
-        'GroupBox1
+        'GroupBoxChoixDuDossier
         '
-        Me.GroupBox1.Controls.Add(Me.LabelNombreDeFichier)
-        Me.GroupBox1.Controls.Add(Me.Label4)
-        Me.GroupBox1.Controls.Add(Me.LabelDossierDeTravail)
-        Me.GroupBox1.Controls.Add(Me.Label2)
-        Me.GroupBox1.Controls.Add(Me.ButtonPickFolder)
-        Me.GroupBox1.Location = New System.Drawing.Point(12, 12)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(284, 129)
-        Me.GroupBox1.TabIndex = 12
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Selection des fichiers"
+        Me.GroupBoxChoixDuDossier.Controls.Add(Me.LabelNombreDeFichier)
+        Me.GroupBoxChoixDuDossier.Controls.Add(Me.Label4)
+        Me.GroupBoxChoixDuDossier.Controls.Add(Me.LabelDossierDeTravail)
+        Me.GroupBoxChoixDuDossier.Controls.Add(Me.Label2)
+        Me.GroupBoxChoixDuDossier.Controls.Add(Me.ButtonPickFolder)
+        Me.GroupBoxChoixDuDossier.Location = New System.Drawing.Point(12, 12)
+        Me.GroupBoxChoixDuDossier.Name = "GroupBoxChoixDuDossier"
+        Me.GroupBoxChoixDuDossier.Size = New System.Drawing.Size(284, 129)
+        Me.GroupBoxChoixDuDossier.TabIndex = 12
+        Me.GroupBoxChoixDuDossier.TabStop = False
+        Me.GroupBoxChoixDuDossier.Text = "Selection des fichiers"
         '
         'GroupBoxAjoutDeSlide
         '
+        Me.GroupBoxAjoutDeSlide.Controls.Add(Me.LabelAttente)
+        Me.GroupBoxAjoutDeSlide.Controls.Add(Me.CBBoxFinACopier)
+        Me.GroupBoxAjoutDeSlide.Controls.Add(Me.CBBoxDebutACopier)
+        Me.GroupBoxAjoutDeSlide.Controls.Add(Me.LabelQuellesSlidesCopier)
+        Me.GroupBoxAjoutDeSlide.Controls.Add(Me.LabelNbSlides)
         Me.GroupBoxAjoutDeSlide.Controls.Add(Me.StartSlide)
         Me.GroupBoxAjoutDeSlide.Controls.Add(Me.EndSlide)
         Me.GroupBoxAjoutDeSlide.Controls.Add(Me.ButtonPickFile)
@@ -173,6 +185,46 @@ Partial Class Form1
         Me.GroupBoxAjoutDeSlide.TabStop = False
         Me.GroupBoxAjoutDeSlide.Text = "Ajout de slides"
         '
+        'CBBoxFinACopier
+        '
+        Me.CBBoxFinACopier.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CBBoxFinACopier.Enabled = False
+        Me.CBBoxFinACopier.FormattingEnabled = True
+        Me.CBBoxFinACopier.Location = New System.Drawing.Point(172, 87)
+        Me.CBBoxFinACopier.Name = "CBBoxFinACopier"
+        Me.CBBoxFinACopier.Size = New System.Drawing.Size(35, 21)
+        Me.CBBoxFinACopier.TabIndex = 6
+        '
+        'CBBoxDebutACopier
+        '
+        Me.CBBoxDebutACopier.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CBBoxDebutACopier.Enabled = False
+        Me.CBBoxDebutACopier.FormattingEnabled = True
+        Me.CBBoxDebutACopier.Location = New System.Drawing.Point(118, 87)
+        Me.CBBoxDebutACopier.Name = "CBBoxDebutACopier"
+        Me.CBBoxDebutACopier.Size = New System.Drawing.Size(35, 21)
+        Me.CBBoxDebutACopier.TabIndex = 5
+        '
+        'LabelQuellesSlidesCopier
+        '
+        Me.LabelQuellesSlidesCopier.AutoSize = True
+        Me.LabelQuellesSlidesCopier.Enabled = False
+        Me.LabelQuellesSlidesCopier.Location = New System.Drawing.Point(16, 90)
+        Me.LabelQuellesSlidesCopier.Name = "LabelQuellesSlidesCopier"
+        Me.LabelQuellesSlidesCopier.Size = New System.Drawing.Size(154, 13)
+        Me.LabelQuellesSlidesCopier.TabIndex = 5
+        Me.LabelQuellesSlidesCopier.Text = "Ajouter les slides de                à"
+        '
+        'LabelNbSlides
+        '
+        Me.LabelNbSlides.AutoSize = True
+        Me.LabelNbSlides.Enabled = False
+        Me.LabelNbSlides.Location = New System.Drawing.Point(16, 68)
+        Me.LabelNbSlides.Name = "LabelNbSlides"
+        Me.LabelNbSlides.Size = New System.Drawing.Size(131, 13)
+        Me.LabelNbSlides.TabIndex = 4
+        Me.LabelNbSlides.Text = "Ce fichier contient X slides"
+        '
         'RadioButtonAjoutSlide
         '
         Me.RadioButtonAjoutSlide.AutoSize = True
@@ -180,7 +232,7 @@ Partial Class Form1
         Me.RadioButtonAjoutSlide.Location = New System.Drawing.Point(17, 151)
         Me.RadioButtonAjoutSlide.Name = "RadioButtonAjoutSlide"
         Me.RadioButtonAjoutSlide.Size = New System.Drawing.Size(93, 17)
-        Me.RadioButtonAjoutSlide.TabIndex = 14
+        Me.RadioButtonAjoutSlide.TabIndex = 2
         Me.RadioButtonAjoutSlide.TabStop = True
         Me.RadioButtonAjoutSlide.Text = "Ajout de slides"
         Me.RadioButtonAjoutSlide.UseVisualStyleBackColor = True
@@ -191,18 +243,37 @@ Partial Class Form1
         Me.RadioButtonAjoutTransitions.Location = New System.Drawing.Point(155, 151)
         Me.RadioButtonAjoutTransitions.Name = "RadioButtonAjoutTransitions"
         Me.RadioButtonAjoutTransitions.Size = New System.Drawing.Size(114, 17)
-        Me.RadioButtonAjoutTransitions.TabIndex = 15
+        Me.RadioButtonAjoutTransitions.TabIndex = 3
         Me.RadioButtonAjoutTransitions.Text = "Ajout de transitions"
         Me.RadioButtonAjoutTransitions.UseVisualStyleBackColor = True
         '
         'GroupBoxAjoutDeTransition
         '
+        Me.GroupBoxAjoutDeTransition.Controls.Add(Me.LabelTBC)
         Me.GroupBoxAjoutDeTransition.Location = New System.Drawing.Point(302, 174)
         Me.GroupBoxAjoutDeTransition.Name = "GroupBoxAjoutDeTransition"
         Me.GroupBoxAjoutDeTransition.Size = New System.Drawing.Size(294, 172)
         Me.GroupBoxAjoutDeTransition.TabIndex = 14
         Me.GroupBoxAjoutDeTransition.TabStop = False
         Me.GroupBoxAjoutDeTransition.Text = "Ajout de transitions"
+        '
+        'LabelAttente
+        '
+        Me.LabelAttente.AutoSize = True
+        Me.LabelAttente.Location = New System.Drawing.Point(39, 81)
+        Me.LabelAttente.Name = "LabelAttente"
+        Me.LabelAttente.Size = New System.Drawing.Size(209, 13)
+        Me.LabelAttente.TabIndex = 18
+        Me.LabelAttente.Text = "Patienter durant la lacture du fichier source"
+        '
+        'LabelTBC
+        '
+        Me.LabelTBC.AutoSize = True
+        Me.LabelTBC.Location = New System.Drawing.Point(93, 81)
+        Me.LabelTBC.Name = "LabelTBC"
+        Me.LabelTBC.Size = New System.Drawing.Size(108, 13)
+        Me.LabelTBC.TabIndex = 0
+        Me.LabelTBC.Text = "A venir dans la V3 ...."
         '
         'Form1
         '
@@ -213,16 +284,18 @@ Partial Class Form1
         Me.Controls.Add(Me.RadioButtonAjoutTransitions)
         Me.Controls.Add(Me.RadioButtonAjoutSlide)
         Me.Controls.Add(Me.GroupBoxAjoutDeSlide)
-        Me.Controls.Add(Me.GroupBox1)
+        Me.Controls.Add(Me.GroupBoxChoixDuDossier)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.ButtonExit)
         Me.Controls.Add(Me.ButtonRun)
         Me.Name = "Form1"
         Me.Text = "Multi Ajout PPT"
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
+        Me.GroupBoxChoixDuDossier.ResumeLayout(False)
+        Me.GroupBoxChoixDuDossier.PerformLayout()
         Me.GroupBoxAjoutDeSlide.ResumeLayout(False)
         Me.GroupBoxAjoutDeSlide.PerformLayout()
+        Me.GroupBoxAjoutDeTransition.ResumeLayout(False)
+        Me.GroupBoxAjoutDeTransition.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -239,9 +312,15 @@ Partial Class Form1
     Friend WithEvents LabelDossierDeTravail As Label
     Friend WithEvents Label4 As Label
     Friend WithEvents LabelNombreDeFichier As Label
-    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents GroupBoxChoixDuDossier As GroupBox
     Friend WithEvents GroupBoxAjoutDeSlide As GroupBox
     Friend WithEvents RadioButtonAjoutSlide As RadioButton
     Friend WithEvents RadioButtonAjoutTransitions As RadioButton
     Friend WithEvents GroupBoxAjoutDeTransition As GroupBox
+    Friend WithEvents LabelQuellesSlidesCopier As Label
+    Friend WithEvents LabelNbSlides As Label
+    Friend WithEvents CBBoxFinACopier As ComboBox
+    Friend WithEvents CBBoxDebutACopier As ComboBox
+    Friend WithEvents LabelAttente As Label
+    Friend WithEvents LabelTBC As Label
 End Class
