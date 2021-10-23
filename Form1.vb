@@ -1,29 +1,30 @@
 ﻿
-Imports Office = Microsoft.Office.Core
 Imports Graph = Microsoft.Office.Interop.Graph
+Imports Office = Microsoft.Office.Core
 Imports PowerPoint = Microsoft.Office.Interop.PowerPoint
+
 Public Class Form1
-    Public FicherPPTdeBASE As String = "", DossierExport As String = "", OnYVa As Boolean, dlgOpen As FileDialog, dlgSave As FileDialog
+    Public FicherPPTdeBASE As String = "", Fichiers As New ArrayList(), FromSlideNo As Integer, ToSlideNo As Integer
     Public Shared PwP As PowerPoint.Application
-    Public PresDeBase As PowerPoint.Presentation, SlideDeBase As PowerPoint.Slide
-    Public PresAModifer As PowerPoint.Presentation, SlideAModifer As PowerPoint.Slide
     'Pour le texte en anglais
     Public SelectedFile As String, NoSelectedFile As String, ChoosePPTFile As String, FilterPPTFile As String, SelectedFolder As String, NoSelectedFolder As String, ChooseFolder As String
 
-    Private Sub CheckIfReadyToGo()
-        ButtonRun.Enabled = (Not String.IsNullOrEmpty(FicherPPTdeBASE)) And (Not String.IsNullOrEmpty(DossierExport))
-        If ButtonRun.Enabled Then ButtonRun.Select()
-    End Sub
-    Private Sub ButtonRun_Click(sender As Object, e As EventArgs) Handles ButtonRun.Click
+    'TO DO
+    '-Refaire marcher la traduction
+    '-Faire un decompte des fichiers fait durant l'execution
 
-        Call main()
-
-    End Sub
-
+    'CHARGEMENT DE L'AFFICHAGE
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         Call LoadLanguage()
         Call CheckIfReadyToGo()
+        GroupBoxAjoutDeTransition.Left = GroupBoxAjoutDeSlide.Left
+        GroupBoxAjoutDeTransition.Top = GroupBoxAjoutDeSlide.Top
+        GroupBoxAjoutDeTransition.Visible = False
+        LabelAttente.Visible = False
+        LabelAttenteMain.Visible = False
+        Me.Width = 325
+
     End Sub
     Private Sub LoadLanguage()
         If Strings.LCase(Strings.Left(System.Globalization.CultureInfo.InstalledUICulture.Name, 2)) = "fr" Then
@@ -44,20 +45,73 @@ Public Class Form1
             NoSelectedFolder = "No selected folder ..."
             ChooseFolder = "Select the folder where the ppt to modify are located"
             ButtonPickFile.Text = "Pick the file containing the slide to add"
-            ButtonPickFolder.Text = "Pick the folder containing the ppt to modify"
+            ButtonPickFolder.Text = "Pick the ppt to modify"
             ButtonExit.Text = "Quit"
             ButtonRun.Text = "Launch multiple addition"
             StartSlide.Text = "Add the slide at the start of the slide show"
             EndSlide.Text = "Add the slide at the end of the slide show"
-            IncludeSubFolder.Text = "Include subfolders"
+            Form2.IncludeSubFolder.Text = "Include subfolders"
         End If
     End Sub
+
+    'CHOIX DES FICHIERS A MODIFIERS
+    Private Sub ButtonPickFolder_Click(sender As Object, e As EventArgs) Handles ButtonPickFolder.Click
+        Form2.ShowDialog()
+        LabelDossierDeTravail.Text = Form2.DossierDeTravail
+        LabelNombreDeFichier.Text = Fichiers.Count & " fichiers à modifier"
+    End Sub
+
+
+    'AFFICHAGE AJOUT DE SLIDE OU DE TRANSITIONS
+    Private Sub RadioButtonAjoutTransitions_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonAjoutTransitions.CheckedChanged
+        If RadioButtonAjoutTransitions.Checked Then
+            GroupBoxAjoutDeSlide.Visible = False
+            GroupBoxAjoutDeTransition.Visible = True
+        Else
+            GroupBoxAjoutDeSlide.Visible = True
+            GroupBoxAjoutDeTransition.Visible = False
+        End If
+    End Sub
+
+    'CHOIX DU FICHIER SOURCE A AJOUTER
     Private Sub ButtonPickFile_Click(sender As Object, e As EventArgs) Handles ButtonPickFile.Click
         FicherPPTdeBASE = FileAddress()
+        Dim NbDeSlide As Integer
+
+        Dim NomDuFichierAAfficher As String
         If FicherPPTdeBASE IsNot "" Then
-            MsgBox(SelectedFile & vbCrLf & FicherPPTdeBASE)
+            If Len(FicherPPTdeBASE) < 48 Then
+                NomDuFichierAAfficher = FicherPPTdeBASE
+            Else
+                NomDuFichierAAfficher = "... " & Strings.LTrim(Strings.Right(FicherPPTdeBASE, 45))
+            End If
+            ButtonPickFile.Text = NomDuFichierAAfficher & vbCrLf & "Pour changer de fichier cliquer ici"
+            LabelAttente.Visible = True
+            NbDeSlide = NbSlide(FicherPPTdeBASE)
+            LabelAttente.Visible = False
+            LabelNbSlides.Text = "Ce fichier comprend " & NbDeSlide & " slides."
+            FromSlideNo = 1
+            ToSlideNo = NbDeSlide
+            For i = 1 To NbDeSlide
+                CBBoxDebutACopier.Items.Add(i)
+                CBBoxFinACopier.Items.Add(i)
+            Next
+            LabelNbSlides.Enabled = True
+            LabelQuellesSlidesCopier.Enabled = True
+            CBBoxDebutACopier.Enabled = True
+            CBBoxDebutACopier.SelectedIndex = 0
+            CBBoxFinACopier.Enabled = True
+            CBBoxFinACopier.SelectedIndex = CBBoxFinACopier.Items.Count - 1
+            MiseAJourLabelNbDeSlidesSingulierPluriel()
+
         Else
             MsgBox(NoSelectedFile)
+            ButtonPickFile.Text = "Pour choisir de fichier source cliquer ici"
+            LabelNbSlides.Text = "Ce fichier comprend  X slides."
+            LabelNbSlides.Enabled = False
+            LabelQuellesSlidesCopier.Enabled = False
+            CBBoxDebutACopier.Enabled = False
+            CBBoxFinACopier.Enabled = False
         End If
         Call CheckIfReadyToGo()
     End Sub
@@ -74,250 +128,95 @@ Public Class Form1
             Return String.Empty
         End If
     End Function
-    Private Sub ButtonPickFolder_Click(sender As Object, e As EventArgs) Handles ButtonPickFolder.Click
-        DossierExport = FolderAddress()
-        If DossierExport IsNot "" Then
-            MsgBox(SelectedFolder & vbCrLf & DossierExport)
-        Else
-            MsgBox(NoSelectedFolder)
+    Sub MiseAJourLabelNbDeSlidesSingulierPluriel()
+        If IsNumeric(CBBoxDebutACopier.SelectedItem) And IsNumeric(CBBoxFinACopier.SelectedItem) Then
+            StartSlide.Text = "Ajouter la slide au début des ppt"
+            If (CBBoxFinACopier.SelectedItem - CBBoxDebutACopier.SelectedItem + 1) > 1 Then
+                StartSlide.Text = "Ajouter les slides au début des ppt"
+                EndSlide.Text = "Ajouter les slides à la fin des ppt"
+            Else
+                StartSlide.Text = "Ajouter la slide au début des ppt"
+                EndSlide.Text = "Ajouter la slide à la fin des ppt"
+            End If
         End If
-        Call CheckIfReadyToGo()
     End Sub
-    Private Function FolderAddress() As String
-        Dim dlg As New FolderBrowserDialog With {
-            .Description = ChooseFolder
-        }
-        If dlg.ShowDialog() = DialogResult.OK Then
-            Dim path As String = dlg.SelectedPath
-            Return path
+    Private Sub CBBoxDebutACopier_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CBBoxDebutACopier.SelectedIndexChanged
+        VerifEtMiseAJourDesVariableDebutEtFinDeSlideACopier()
+        MiseAJourLabelNbDeSlidesSingulierPluriel()
+    End Sub
+    Private Sub CBBoxFinACopier_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CBBoxFinACopier.SelectedIndexChanged
+        VerifEtMiseAJourDesVariableDebutEtFinDeSlideACopier()
+        MiseAJourLabelNbDeSlidesSingulierPluriel()
+    End Sub
+    Private Sub VerifEtMiseAJourDesVariableDebutEtFinDeSlideACopier()
+        If CBBoxFinACopier.SelectedItem < CBBoxDebutACopier.SelectedItem Then
+            CBBoxFinACopier.SelectedItem = ToSlideNo
+            CBBoxDebutACopier.SelectedItem = FromSlideNo
         Else
-            Return String.Empty
+            ToSlideNo = CBBoxFinACopier.SelectedItem
+            FromSlideNo = CBBoxDebutACopier.SelectedItem
         End If
-    End Function
-
-    Private Sub ButtonExit_Click(sender As Object, e As EventArgs) Handles ButtonExit.Click
-        Application.Exit()
     End Sub
-
-    Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
-        MsgBox("Made by @ZacharieCortes", MsgBoxStyle.OkOnly Or MsgBoxStyle.Information, "Crédits") ', MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
-    End Sub
-
-    Sub Main()
+    Function NbSlide(fichierACompter As String) As Integer
         'Start Powerpoint
+        Dim PresDeBase As PowerPoint.Presentation
         PwP = New PowerPoint.Application()
-
-        'copier la slide et refermer le fichier
-        PresDeBase = PwP.Presentations.Open(FicherPPTdeBASE, , , False)
-        PresDeBase.Slides(1).Copy()
+        PresDeBase = PwP.Presentations.Open(fichierACompter, , , False)
+        NbSlide = PresDeBase.Slides.Count
         PresDeBase.Saved = True
         PresDeBase.Close()
         PresDeBase = Nothing
-
-        'boucle sur tout les fichiers
-        Call ListFilesInFolder(DossierExport, IncludeSubFolder.Checked)
-
         'on quitte pwp
         PwP.Quit()
         PwP = Nothing
         GC.Collect()
-        Me.Close()
-    End Sub
-
-    Sub OuvreColleLaSlideSauveEtFerme(nom As String)
-
-        PresAModifer = PwP.Presentations.Open(nom, , , False)
-        If StartSlide.Checked Then
-            PresAModifer.Slides().Paste(1)
-        Else
-            PresAModifer.Slides().Paste()
-        End If
-
-        PresAModifer.Save()
-        PresAModifer.Close()
-    End Sub
-
-    Sub ListFilesInFolder(ByVal xFolderName As String, ByVal xIsSubfolders As Boolean)
-        Dim xFileSystemObject As Object
-        Dim xFolder As Object
-        Dim xSubFolder As Object
-        Dim xFile As Object
-        xFileSystemObject = CreateObject("Scripting.FileSystemObject")
-        xFolder = xFileSystemObject.GetFolder(xFolderName)
-
-        For Each xFile In xFolder.Files
-            Dim ext = Microsoft.VisualBasic.Right(xFile.name, 4)
-            If ext = ".ppt" Or ext = "pptx" Or ext = "pptm" Or ext = "ppsm" Then
-                Debug.Print(xFile.name)
-                Call OuvreColleLaSlideSauveEtFerme(xFile.path)
-            End If
-            'Call ajoutDeLaSlide(xFile)
-        Next xFile
-        If xIsSubfolders Then
-            For Each xSubFolder In xFolder.SubFolders
-                Call ListFilesInFolder(xSubFolder.Path, True)
-            Next xSubFolder
-        End If
-        xFile = Nothing
-        xFolder = Nothing
-        xFileSystemObject = Nothing
-    End Sub
-
-
-
-    Private Sub PictureBox1_Click(sender As Object, e As EventArgs)
-        MsgBox(GetOSLanguage())
-
-    End Sub
-    Public Function GetOSLanguage() As String
-        Return System.Globalization.CultureInfo.InstalledUICulture.Name
     End Function
 
+    'BOUTON QUITTER ET CREDIT
+    Private Sub ButtonExit_Click(sender As Object, e As EventArgs) Handles ButtonExit.Click
+        Application.Exit()
+    End Sub
+    Private Sub LabelCredits_Click(sender As Object, e As EventArgs) Handles LabelCredits.Click
+        MsgBox("Made by @ZacharieCortes", MsgBoxStyle.OkOnly Or MsgBoxStyle.Information, "Crédits") ', MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
+    End Sub
+
+    'BOUTON RUN
+    Private Sub CheckIfReadyToGo()
+        ButtonRun.Enabled = (Not String.IsNullOrEmpty(FicherPPTdeBASE)) And (Fichiers.Count > 0)
+        If ButtonRun.Enabled Then ButtonRun.Select()
+    End Sub
+    Private Sub ButtonRun_Click(sender As Object, e As EventArgs) Handles ButtonRun.Click
+        Call Main()
+    End Sub
+
+    'AJOUT  DES SLIDES
+    Sub Main()
+        Dim Fichier As String
+        GroupBoxAjoutDeSlide.Visible = False
+        GroupBoxAjoutDeTransition.Visible = False
+        LabelAttenteMain.Visible = True
+        PwP = New PowerPoint.Application
+        For Each Fichier In Fichiers
+            Call OuvreAjouteSauveEtFerme(Fichier)
+        Next Fichier
+        PwP.Quit()
+        PwP = Nothing
+        GC.Collect()
+        LabelAttenteMain.Visible = False
+        GroupBoxAjoutDeSlide.Visible = True
+        If MsgBox("Vos fichiers ont bien été modifié, souhaitez vous ouvrir le dossier et quitter ?", MsgBoxStyle.YesNo) = 6 Then
+            Process.Start("explorer.exe", Form2.DossierDeTravail)
+            Application.Exit()
+        End If
+    End Sub
+    Sub OuvreAjouteSauveEtFerme(Fichier As String)
+        Dim PptAModifer As PowerPoint.Presentation
+        Dim ApresQuelleSlide As Integer = 0
+        PptAModifer = PwP.Presentations.Open(FileName:=Fichier, , , False)
+        If EndSlide.Checked Then ApresQuelleSlide = PptAModifer.Slides.Count
+        'expression.InsertFromFile(CheminPresentationSource, Index, SlideDebut, SlideFin)
+        PptAModifer.Slides.InsertFromFile(FicherPPTdeBASE, ApresQuelleSlide, FromSlideNo, ToSlideNo)
+        PptAModifer.Save()
+        PptAModifer.Close()
+    End Sub
 End Class
-
-
-
-'Sub ARCHIVE_OuvrirLeFichier(leFichier As String)
-'    Const sPic = "c:\Program Files (x86)\Microsoft Office\root\CLIPART\PUB60COR\PH02746U.BMP"
-
-'    Dim PwP As PowerPoint.Application
-'    Dim oPres As PowerPoint.Presentation
-'    Dim oSlide As PowerPoint.Slide
-
-'    'Start Powerpoint and make its window visible but minimized.
-'    PwP = New PowerPoint.Application()
-'    PwP.Visible = True
-'    PwP.WindowState = PowerPoint.PpWindowState.ppWindowMinimized
-
-'    'oPres.Open(FileName:="D:\Dropbox\Boulot\MaMa Xls to PPT\2021\CREDIT TEST.pptx")
-'    'PwP.Presentations.Open(FicherPPTdeBASE)
-'    Dim sTemplate As String
-'    sTemplate = leFichier
-'    'Const sTemplate = leFichier
-'    'Create a new presentation based on the specified template.
-'    oPres = PwP.Presentations.Open(sTemplate, , , True)
-
-'    'Build Slide #1:
-'    'Add text to the slide, change the font and insert/position a 
-'    'picture on the first slide.
-'    oSlide = oPres.Slides.Add(1, PowerPoint.PpSlideLayout.ppLayoutTitleOnly)
-'    With oSlide.Shapes.Item(1).TextFrame.TextRange
-'        .Text = "My Sample Presentation"
-'        .Font.Name = "Comic Sans MS"
-'        .Font.Size = 48
-'    End With
-'    oSlide.Shapes.AddPicture(sPic, False, True, 150, 150, 500, 350)
-'    oSlide = Nothing
-
-'    'Build Slide #2:
-'    'Add text to the slide title, format the text. Also add a chart to the
-'    'slide and change the chart type to a 3D pie chart.
-'    oSlide = oPres.Slides.Add(2, PowerPoint.PpSlideLayout.ppLayoutTitleOnly)
-'    With oSlide.Shapes.Item(1).TextFrame.TextRange
-'        .Text = "My Chart"
-'        .Font.Name = "Comic Sans MS"
-'        .Font.Size = 48
-'    End With
-'    Dim oChart As Graph.Chart
-'    oChart = oSlide.Shapes.AddOLEObject(150, 150, 480, 320,
-'                "MSGraph.Chart.8").OLEFormat.Object
-'    oChart.ChartType = Graph.XlChartType.xl3DPie
-'    oChart = Nothing
-'    oSlide = Nothing
-
-'    'Build Slide #3:
-'    'Add a text effect to the slide and apply shadows to the text effect.
-'    oSlide = oPres.Slides.Add(3, PowerPoint.PpSlideLayout.ppLayoutBlank)
-'    oSlide.FollowMasterBackground = False
-'    Dim oShape As PowerPoint.Shape
-'    oShape = oSlide.Shapes.AddTextEffect(Office.MsoPresetTextEffect.msoTextEffect27,
-'        "The End", "Impact", 96, False, False, 230, 200)
-'    oShape.Shadow.ForeColor.SchemeColor = PowerPoint.PpColorSchemeIndex.ppForeground
-'    oShape.Shadow.Visible = True
-'    oShape.Shadow.OffsetX = 3
-'    oShape.Shadow.OffsetY = 3
-'    oShape = Nothing
-'    oSlide = Nothing
-
-'    'Modify the slide show transition settings for all 3 slides in
-'    'the presentation.
-'    Dim SlideIdx(3) As Integer
-'    SlideIdx(0) = 1
-'    SlideIdx(1) = 2
-'    SlideIdx(2) = 3
-'    With oPres.Slides.Range(SlideIdx).SlideShowTransition
-'        .AdvanceOnTime = True
-'        .AdvanceTime = 3
-'        .EntryEffect = PowerPoint.PpEntryEffect.ppEffectBoxOut
-'    End With
-'    Dim oSettings As PowerPoint.SlideShowSettings
-'    oSettings = oPres.SlideShowSettings
-'    oSettings.StartingSlide = 1
-'    oSettings.EndingSlide = 3
-
-
-
-'    'Close the presentation without saving changes and quit PowerPoint.
-'    oPres.Saved = False
-'    oPres.Save()
-'    oPres.Close()
-'    oPres = Nothing
-'    PwP.Quit()
-'    PwP = Nothing
-'    GC.Collect()
-'End Sub
-
-'Option Explicit On
-
-
-'Sub MainDecoupage()
-'    Formulaire.Show
-'    If OnYVa = False Then Exit Sub
-'    MsgBox "Attention ! Ce Proccessus peux etre long ! Merci de ne rien faire avec votre ordinateur avant le message de fin de traitement !", vbExclamation
-'DossierExport = DossierExport & "\"
-
-''Ouverture du fichier
-'Set PPTdeBASE = Application.Presentations.Open(FileName:=FicherPPTdeBASE)
-
-''boucle sur tout les fichiers du dossier
-'Call ListFilesInFolder(DossierExport, True)
-
-'    'on referme la slide de base
-'    PPTdeBASE.Close
-
-'    MsgBox "Voila, vos fichiers sont maintenant crées ! A bientôt !", vbExclamation
-''Application.Quit
-'End Sub
-'Sub ajoutDeLaSlide(ByVal fichierPPTenCOUR As String)
-'    Dim PPTenCOUR As PowerPoint.Presentation
-'    Set PPTenCOUR = Application.Presentations.Open(FileName:=fichierPPTenCOUR)
-'    PPTdeBASE.Slides(1).Copy
-'    PPTenCOUR.Slides.Paste
-'    PPTenCOUR.Save
-'    PPTenCOUR.Close
-'End Sub
-
-'Sub test()
-'    Call ListFilesInFolder("D:\OneDrive\Famille et amis\Balthazar", True)
-'End Sub
-'Sub ListFilesInFolder(ByVal xFolderName As String, ByVal xIsSubfolders As Boolean)
-'    Dim xFileSystemObject As Object
-'    Dim xFolder As Object
-'    Dim xSubFolder As Object
-'    Dim xFile As Object
-'Set xFileSystemObject = CreateObject("Scripting.FileSystemObject")
-'Set xFolder = xFileSystemObject.GetFolder(xFolderName)
-
-'For Each xFile In xFolder.Files
-'        Call ajoutDeLaSlide(xFile)
-'    Next xFile
-'    If xIsSubfolders Then
-'        For Each xSubFolder In xFolder.SubFolders
-'            Call ListFilesInFolder(xSubFolder.Path, True)
-'        Next xSubFolder
-'    End If
-'Set xFile = Nothing
-'Set xFolder = Nothing
-'Set xFileSystemObject = Nothing
-'End Sub
-
