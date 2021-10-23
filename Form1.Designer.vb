@@ -45,6 +45,7 @@ Partial Class Form1
         Me.GroupBoxAjoutDeTransition = New System.Windows.Forms.GroupBox()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.LabelTBC = New System.Windows.Forms.Label()
+        Me.LabelAttenteMain = New System.Windows.Forms.Label()
         Me.GroupBoxChoixDuDossier.SuspendLayout()
         Me.GroupBoxAjoutDeSlide.SuspendLayout()
         Me.GroupBoxAjoutDeTransition.SuspendLayout()
@@ -193,7 +194,8 @@ Partial Class Form1
         Me.LabelAttente.Name = "LabelAttente"
         Me.LabelAttente.Size = New System.Drawing.Size(209, 13)
         Me.LabelAttente.TabIndex = 18
-        Me.LabelAttente.Text = "Patienter durant la lacture du fichier source"
+        Me.LabelAttente.Text = "Patienter durant la lecture du fichier source"
+        Me.LabelAttente.Visible = False
         '
         'CBBoxFinACopier
         '
@@ -286,11 +288,21 @@ Partial Class Form1
         Me.LabelTBC.TabIndex = 0
         Me.LabelTBC.Text = "A venir dans la V3 ...."
         '
+        'LabelAttenteMain
+        '
+        Me.LabelAttenteMain.AutoSize = True
+        Me.LabelAttenteMain.Location = New System.Drawing.Point(73, 242)
+        Me.LabelAttenteMain.Name = "LabelAttenteMain"
+        Me.LabelAttenteMain.Size = New System.Drawing.Size(165, 13)
+        Me.LabelAttenteMain.TabIndex = 15
+        Me.LabelAttenteMain.Text = "Travail en cour merci de patienter"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(648, 411)
+        Me.Controls.Add(Me.LabelAttenteMain)
         Me.Controls.Add(Me.GroupBoxAjoutDeTransition)
         Me.Controls.Add(Me.RadioButtonAjoutTransitions)
         Me.Controls.Add(Me.RadioButtonAjoutSlide)
@@ -335,4 +347,5 @@ Partial Class Form1
     Friend WithEvents LabelAttente As Label
     Friend WithEvents LabelTBC As Label
     Friend WithEvents Button1 As Button
+    Friend WithEvents LabelAttenteMain As Label
 End Class

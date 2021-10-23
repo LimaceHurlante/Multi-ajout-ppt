@@ -4,19 +4,14 @@ Imports Office = Microsoft.Office.Core
 Imports PowerPoint = Microsoft.Office.Interop.PowerPoint
 
 Public Class Form1
-    Public FicherPPTdeBASE As String = "", DossierExport As String = "", OnYVa As Boolean, dlgOpen As FileDialog, dlgSave As FileDialog
+    Public FicherPPTdeBASE As String = "", Fichiers As New ArrayList(), FromSlideNo As Integer, ToSlideNo As Integer
     Public Shared PwP As PowerPoint.Application
-    Public PresDeBase As PowerPoint.Presentation, SlideDeBase As PowerPoint.Slide
-    Public PresAModifer As PowerPoint.Presentation, SlideAModifer As PowerPoint.Slide
     'Pour le texte en anglais
     Public SelectedFile As String, NoSelectedFile As String, ChoosePPTFile As String, FilterPPTFile As String, SelectedFolder As String, NoSelectedFolder As String, ChooseFolder As String
-    ' TEST LISTE DE FICHIER
-    Public Fichiers As New ArrayList()
-    Public FromSlideNo As Integer, ToSlideNo As Integer
 
     'TO DO
-    '-Netoyer les fichier test, surtout les variable inutilisée en public
     '-Refaire marcher la traduction
+    '-Faire un decompte des fichiers fait durant l'execution
 
     'CHARGEMENT DE L'AFFICHAGE
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -27,6 +22,7 @@ Public Class Form1
         GroupBoxAjoutDeTransition.Top = GroupBoxAjoutDeSlide.Top
         GroupBoxAjoutDeTransition.Visible = False
         LabelAttente.Visible = False
+        LabelAttenteMain.Visible = False
         Me.Width = 325
 
     End Sub
@@ -58,7 +54,7 @@ Public Class Form1
         End If
     End Sub
 
-    'CHOIS DES FICHIER A MODIFIERS
+    'CHOIX DES FICHIERS A MODIFIERS
     Private Sub ButtonPickFolder_Click(sender As Object, e As EventArgs) Handles ButtonPickFolder.Click
         Form2.ShowDialog()
         LabelDossierDeTravail.Text = Form2.DossierDeTravail
@@ -163,6 +159,7 @@ Public Class Form1
     End Sub
     Function NbSlide(fichierACompter As String) As Integer
         'Start Powerpoint
+        Dim PresDeBase As PowerPoint.Presentation
         PwP = New PowerPoint.Application()
         PresDeBase = PwP.Presentations.Open(fichierACompter, , , False)
         NbSlide = PresDeBase.Slides.Count
@@ -195,6 +192,9 @@ Public Class Form1
     'AJOUT  DES SLIDES
     Sub Main()
         Dim Fichier As String
+        GroupBoxAjoutDeSlide.Visible = False
+        GroupBoxAjoutDeTransition.Visible = False
+        LabelAttenteMain.Visible = True
         PwP = New PowerPoint.Application
         For Each Fichier In Fichiers
             Call OuvreAjouteSauveEtFerme(Fichier)
@@ -202,6 +202,8 @@ Public Class Form1
         PwP.Quit()
         PwP = Nothing
         GC.Collect()
+        LabelAttenteMain.Visible = False
+        GroupBoxAjoutDeSlide.Visible = True
         If MsgBox("Vos fichiers ont bien été modifié, souhaitez vous ouvrir le dossier et quitter ?", MsgBoxStyle.YesNo) = 6 Then
             Process.Start("explorer.exe", Form2.DossierDeTravail)
             Application.Exit()
@@ -216,6 +218,5 @@ Public Class Form1
         PptAModifer.Slides.InsertFromFile(FicherPPTdeBASE, ApresQuelleSlide, FromSlideNo, ToSlideNo)
         PptAModifer.Save()
         PptAModifer.Close()
-        PptAModifer = Nothing
     End Sub
 End Class
