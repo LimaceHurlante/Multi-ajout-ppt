@@ -14,6 +14,9 @@ Public Class Form1
     Public Fichiers As New ArrayList()
     Public FromSlideNo As Integer, ToSlideNo As Integer
 
+    'TO DO
+    '-Netoyer les fichier test, surtout les variable inutilisée en public
+    '-Refaire marcher la traduction
 
     'CHARGEMENT DE L'AFFICHAGE
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -55,37 +58,15 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub CBBoxDebutACopier_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CBBoxDebutACopier.SelectedIndexChanged
-        VerifEtMiseAJourDesVariableDebutEtFinDeSlideACopier()
-        MiseAJourLabelNbDeSlidesSingulierPluriel()
-    End Sub
-    Private Sub CBBoxFinACopier_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CBBoxFinACopier.SelectedIndexChanged
-        VerifEtMiseAJourDesVariableDebutEtFinDeSlideACopier()
-        MiseAJourLabelNbDeSlidesSingulierPluriel()
-    End Sub
-
-    Private Sub VerifEtMiseAJourDesVariableDebutEtFinDeSlideACopier()
-        If CBBoxFinACopier.SelectedItem < CBBoxDebutACopier.SelectedItem Then
-            CBBoxFinACopier.SelectedItem = ToSlideNo
-            CBBoxDebutACopier.SelectedItem = FromSlideNo
-        Else
-            ToSlideNo = CBBoxFinACopier.SelectedItem
-            FromSlideNo = CBBoxDebutACopier.SelectedItem
-        End If
-    End Sub
-
-    Sub MiseAJourLabelNbDeSlidesSingulierPluriel()
-        If IsNumeric(CBBoxDebutACopier.SelectedItem) And IsNumeric(CBBoxFinACopier.SelectedItem) Then
-            StartSlide.Text = "Ajouter la slide au début des ppt"
-            If (CBBoxFinACopier.SelectedItem - CBBoxDebutACopier.SelectedItem + 1) > 1 Then
-                StartSlide.Text = "Ajouter les slides au début des ppt"
-            Else
-                StartSlide.Text = "Ajouter la slide au début des ppt"
-            End If
-        End If
+    'CHOIS DES FICHIER A MODIFIERS
+    Private Sub ButtonPickFolder_Click(sender As Object, e As EventArgs) Handles ButtonPickFolder.Click
+        Form2.ShowDialog()
+        LabelDossierDeTravail.Text = Form2.DossierDeTravail
+        LabelNombreDeFichier.Text = Fichiers.Count & " fichiers à modifier"
     End Sub
 
 
+    'AFFICHAGE AJOUT DE SLIDE OU DE TRANSITIONS
     Private Sub RadioButtonAjoutTransitions_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButtonAjoutTransitions.CheckedChanged
         If RadioButtonAjoutTransitions.Checked Then
             GroupBoxAjoutDeSlide.Visible = False
@@ -96,6 +77,7 @@ Public Class Form1
         End If
     End Sub
 
+    'CHOIX DU FICHIER SOURCE A AJOUTER
     Private Sub ButtonPickFile_Click(sender As Object, e As EventArgs) Handles ButtonPickFile.Click
         FicherPPTdeBASE = FileAddress()
         Dim NbDeSlide As Integer
@@ -150,27 +132,34 @@ Public Class Form1
             Return String.Empty
         End If
     End Function
-    Private Sub ButtonPickFolder_Click(sender As Object, e As EventArgs) Handles ButtonPickFolder.Click
-        Form2.ShowDialog()
-        LabelDossierDeTravail.Text = Form2.DossierDeTravail
-        LabelNombreDeFichier.Text = Fichiers.Count & " fichiers à modifier"
-    End Sub
-    Private Function FolderAddress() As String
-        Dim dlg As New FolderBrowserDialog With {
-            .Description = ChooseFolder
-        }
-        If dlg.ShowDialog() = DialogResult.OK Then
-            Dim path As String = dlg.SelectedPath
-            Return path
-        Else
-            Return String.Empty
+    Sub MiseAJourLabelNbDeSlidesSingulierPluriel()
+        If IsNumeric(CBBoxDebutACopier.SelectedItem) And IsNumeric(CBBoxFinACopier.SelectedItem) Then
+            StartSlide.Text = "Ajouter la slide au début des ppt"
+            If (CBBoxFinACopier.SelectedItem - CBBoxDebutACopier.SelectedItem + 1) > 1 Then
+                StartSlide.Text = "Ajouter les slides au début des ppt"
+                EndSlide.Text = "Ajouter les slides à la fin des ppt"
+            Else
+                StartSlide.Text = "Ajouter la slide au début des ppt"
+                EndSlide.Text = "Ajouter la slide à la fin des ppt"
+            End If
         End If
-    End Function
-    Private Sub ButtonExit_Click(sender As Object, e As EventArgs) Handles ButtonExit.Click
-        Application.Exit()
     End Sub
-    Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
-        MsgBox("Made by @ZacharieCortes", MsgBoxStyle.OkOnly Or MsgBoxStyle.Information, "Crédits") ', MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
+    Private Sub CBBoxDebutACopier_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CBBoxDebutACopier.SelectedIndexChanged
+        VerifEtMiseAJourDesVariableDebutEtFinDeSlideACopier()
+        MiseAJourLabelNbDeSlidesSingulierPluriel()
+    End Sub
+    Private Sub CBBoxFinACopier_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CBBoxFinACopier.SelectedIndexChanged
+        VerifEtMiseAJourDesVariableDebutEtFinDeSlideACopier()
+        MiseAJourLabelNbDeSlidesSingulierPluriel()
+    End Sub
+    Private Sub VerifEtMiseAJourDesVariableDebutEtFinDeSlideACopier()
+        If CBBoxFinACopier.SelectedItem < CBBoxDebutACopier.SelectedItem Then
+            CBBoxFinACopier.SelectedItem = ToSlideNo
+            CBBoxDebutACopier.SelectedItem = FromSlideNo
+        Else
+            ToSlideNo = CBBoxFinACopier.SelectedItem
+            FromSlideNo = CBBoxDebutACopier.SelectedItem
+        End If
     End Sub
     Function NbSlide(fichierACompter As String) As Integer
         'Start Powerpoint
@@ -186,47 +175,47 @@ Public Class Form1
         GC.Collect()
     End Function
 
+    'BOUTON QUITTER ET CREDIT
+    Private Sub ButtonExit_Click(sender As Object, e As EventArgs) Handles ButtonExit.Click
+        Application.Exit()
+    End Sub
+    Private Sub LabelCredits_Click(sender As Object, e As EventArgs) Handles LabelCredits.Click
+        MsgBox("Made by @ZacharieCortes", MsgBoxStyle.OkOnly Or MsgBoxStyle.Information, "Crédits") ', MsgBoxStyle.OkOnly Or MsgBoxStyle.Information)
+    End Sub
+
+    'BOUTON RUN
     Private Sub CheckIfReadyToGo()
-        ButtonRun.Enabled = (Not String.IsNullOrEmpty(FicherPPTdeBASE)) And (Not String.IsNullOrEmpty(DossierExport))
+        ButtonRun.Enabled = (Not String.IsNullOrEmpty(FicherPPTdeBASE)) And (Fichiers.Count > 0)
         If ButtonRun.Enabled Then ButtonRun.Select()
     End Sub
     Private Sub ButtonRun_Click(sender As Object, e As EventArgs) Handles ButtonRun.Click
-
         Call Main()
-
     End Sub
+
+    'AJOUT  DES SLIDES
     Sub Main()
-        'Start Powerpoint
-        PwP = New PowerPoint.Application()
-
-        'copier la slide et refermer le fichier
-        PresDeBase = PwP.Presentations.Open(FicherPPTdeBASE, , , False)
-        PresDeBase.Slides(1).Copy()
-        PresDeBase.Saved = True
-        PresDeBase.Close()
-        PresDeBase = Nothing
-
-        'boucle sur tout les fichiers
-        'Call ListFilesInFolder(DossierExport, Form2.IncludeSubFolder.Checked)
-
-        'on quitte pwp
+        Dim Fichier As String
+        PwP = New PowerPoint.Application
+        For Each Fichier In Fichiers
+            Call OuvreAjouteSauveEtFerme(Fichier)
+        Next Fichier
         PwP.Quit()
         PwP = Nothing
         GC.Collect()
-        Me.Close()
-    End Sub
-    Sub OuvreColleLaSlideSauveEtFerme(nom As String)
-
-        PresAModifer = PwP.Presentations.Open(nom, , , False)
-        If StartSlide.Checked Then
-            PresAModifer.Slides().Paste(1)
-        Else
-            PresAModifer.Slides().Paste()
+        If MsgBox("Vos fichiers ont bien été modifié, souhaitez vous ouvrir le dossier et quitter ?", MsgBoxStyle.YesNo) = 6 Then
+            Process.Start("explorer.exe", Form2.DossierDeTravail)
+            Application.Exit()
         End If
-
-        PresAModifer.Save()
-        PresAModifer.Close()
     End Sub
-
-
+    Sub OuvreAjouteSauveEtFerme(Fichier As String)
+        Dim PptAModifer As PowerPoint.Presentation
+        Dim ApresQuelleSlide As Integer = 0
+        PptAModifer = PwP.Presentations.Open(FileName:=Fichier, , , False)
+        If EndSlide.Checked Then ApresQuelleSlide = PptAModifer.Slides.Count
+        'expression.InsertFromFile(CheminPresentationSource, Index, SlideDebut, SlideFin)
+        PptAModifer.Slides.InsertFromFile(FicherPPTdeBASE, ApresQuelleSlide, FromSlideNo, ToSlideNo)
+        PptAModifer.Save()
+        PptAModifer.Close()
+        PptAModifer = Nothing
+    End Sub
 End Class

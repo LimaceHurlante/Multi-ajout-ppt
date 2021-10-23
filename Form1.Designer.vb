@@ -28,13 +28,14 @@ Partial Class Form1
         Me.StartSlide = New System.Windows.Forms.RadioButton()
         Me.ButtonRun = New System.Windows.Forms.Button()
         Me.ButtonExit = New System.Windows.Forms.Button()
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.LabelCredits = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.LabelDossierDeTravail = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.LabelNombreDeFichier = New System.Windows.Forms.Label()
         Me.GroupBoxChoixDuDossier = New System.Windows.Forms.GroupBox()
         Me.GroupBoxAjoutDeSlide = New System.Windows.Forms.GroupBox()
+        Me.LabelAttente = New System.Windows.Forms.Label()
         Me.CBBoxFinACopier = New System.Windows.Forms.ComboBox()
         Me.CBBoxDebutACopier = New System.Windows.Forms.ComboBox()
         Me.LabelQuellesSlidesCopier = New System.Windows.Forms.Label()
@@ -42,7 +43,7 @@ Partial Class Form1
         Me.RadioButtonAjoutSlide = New System.Windows.Forms.RadioButton()
         Me.RadioButtonAjoutTransitions = New System.Windows.Forms.RadioButton()
         Me.GroupBoxAjoutDeTransition = New System.Windows.Forms.GroupBox()
-        Me.LabelAttente = New System.Windows.Forms.Label()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.LabelTBC = New System.Windows.Forms.Label()
         Me.GroupBoxChoixDuDossier.SuspendLayout()
         Me.GroupBoxAjoutDeSlide.SuspendLayout()
@@ -107,14 +108,14 @@ Partial Class Form1
         Me.ButtonExit.Text = "Quitter"
         Me.ButtonExit.UseVisualStyleBackColor = True
         '
-        'Label1
+        'LabelCredits
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(283, 394)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(13, 13)
-        Me.Label1.TabIndex = 11
-        Me.Label1.Text = "?"
+        Me.LabelCredits.AutoSize = True
+        Me.LabelCredits.Location = New System.Drawing.Point(283, 394)
+        Me.LabelCredits.Name = "LabelCredits"
+        Me.LabelCredits.Size = New System.Drawing.Size(13, 13)
+        Me.LabelCredits.TabIndex = 11
+        Me.LabelCredits.Text = "?"
         '
         'Label2
         '
@@ -185,6 +186,15 @@ Partial Class Form1
         Me.GroupBoxAjoutDeSlide.TabStop = False
         Me.GroupBoxAjoutDeSlide.Text = "Ajout de slides"
         '
+        'LabelAttente
+        '
+        Me.LabelAttente.AutoSize = True
+        Me.LabelAttente.Location = New System.Drawing.Point(39, 81)
+        Me.LabelAttente.Name = "LabelAttente"
+        Me.LabelAttente.Size = New System.Drawing.Size(209, 13)
+        Me.LabelAttente.TabIndex = 18
+        Me.LabelAttente.Text = "Patienter durant la lacture du fichier source"
+        '
         'CBBoxFinACopier
         '
         Me.CBBoxFinACopier.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
@@ -249,6 +259,7 @@ Partial Class Form1
         '
         'GroupBoxAjoutDeTransition
         '
+        Me.GroupBoxAjoutDeTransition.Controls.Add(Me.Button1)
         Me.GroupBoxAjoutDeTransition.Controls.Add(Me.LabelTBC)
         Me.GroupBoxAjoutDeTransition.Location = New System.Drawing.Point(302, 174)
         Me.GroupBoxAjoutDeTransition.Name = "GroupBoxAjoutDeTransition"
@@ -257,14 +268,14 @@ Partial Class Form1
         Me.GroupBoxAjoutDeTransition.TabStop = False
         Me.GroupBoxAjoutDeTransition.Text = "Ajout de transitions"
         '
-        'LabelAttente
+        'Button1
         '
-        Me.LabelAttente.AutoSize = True
-        Me.LabelAttente.Location = New System.Drawing.Point(39, 81)
-        Me.LabelAttente.Name = "LabelAttente"
-        Me.LabelAttente.Size = New System.Drawing.Size(209, 13)
-        Me.LabelAttente.TabIndex = 18
-        Me.LabelAttente.Text = "Patienter durant la lacture du fichier source"
+        Me.Button1.Location = New System.Drawing.Point(97, 125)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(104, 23)
+        Me.Button1.TabIndex = 1
+        Me.Button1.Text = "Bouton de test"
+        Me.Button1.UseVisualStyleBackColor = True
         '
         'LabelTBC
         '
@@ -285,7 +296,7 @@ Partial Class Form1
         Me.Controls.Add(Me.RadioButtonAjoutSlide)
         Me.Controls.Add(Me.GroupBoxAjoutDeSlide)
         Me.Controls.Add(Me.GroupBoxChoixDuDossier)
-        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.LabelCredits)
         Me.Controls.Add(Me.ButtonExit)
         Me.Controls.Add(Me.ButtonRun)
         Me.Name = "Form1"
@@ -307,7 +318,7 @@ Partial Class Form1
     Friend WithEvents StartSlide As RadioButton
     Friend WithEvents ButtonRun As Button
     Friend WithEvents ButtonExit As Button
-    Friend WithEvents Label1 As Label
+    Friend WithEvents LabelCredits As Label
     Friend WithEvents Label2 As Label
     Friend WithEvents LabelDossierDeTravail As Label
     Friend WithEvents Label4 As Label
@@ -323,4 +334,5 @@ Partial Class Form1
     Friend WithEvents CBBoxDebutACopier As ComboBox
     Friend WithEvents LabelAttente As Label
     Friend WithEvents LabelTBC As Label
+    Friend WithEvents Button1 As Button
 End Class
