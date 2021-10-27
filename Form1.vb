@@ -7,11 +7,11 @@ Public Class Form1
     Public FicherPPTdeBASE As String = "", Fichiers As New ArrayList(), FromSlideNo As Integer, ToSlideNo As Integer
     Public Shared PwP As PowerPoint.Application
     'Pour le texte en anglais
-    Public SelectedFile As String, NoSelectedFile As String, ChoosePPTFile As String, FilterPPTFile As String, SelectedFolder As String, NoSelectedFolder As String, ChooseFolder As String
+    Public NoSelectedFile As String, ChoosePPTFile As String, FilterPPTFile As String, NoSelectedFolder As String, ChooseFolder As String, HowManySlide As String, FileSelected As String
 
     'TO DO
-    '-Refaire marcher la traduction
     '-Faire un decompte des fichiers fait durant l'execution
+    '-Bug si dossier trop grand selectionné !
 
     'CHARGEMENT DE L'AFFICHAGE
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -28,29 +28,57 @@ Public Class Form1
     End Sub
     Private Sub LoadLanguage()
         If Strings.LCase(Strings.Left(System.Globalization.CultureInfo.InstalledUICulture.Name, 2)) = "fr" Then
-            SelectedFile = "Vous avez selectionné ce fichier :"
+            'VARIABLES
             NoSelectedFile = "Pas de fichier séléctioné ..."
             ChoosePPTFile = "Choix du fichier PowerPoint à ajouter"
             FilterPPTFile = "Fichiers PowerPoint|*.ppt;*.pptx;*.pptm"
-            SelectedFolder = "Vous avez selectionné ce dossier :"
             NoSelectedFolder = "Pas de dossier séléctioné ..."
             ChooseFolder = "Selectionnez le dossier dans lequel se trouvent les ppt à modifer"
+            HowManySlide = "Ce fichier contient"
+            FileSelected = "Nombre de fichiers selectionné(s) : "
 
         Else
-            SelectedFile = "You selected this file:"
+            'VARIABLES
             NoSelectedFile = "No selected file ..."
             ChoosePPTFile = "Choose a PowerPoint file to add"
             FilterPPTFile = "PowerPoint files|*.ppt;*.pptx;*.pptm"
-            SelectedFolder = "You selected this folder:"
             NoSelectedFolder = "No selected folder ..."
             ChooseFolder = "Select the folder where the ppt to modify are located"
+            HowManySlide = "This file contains"
+            FileSelected = "Files selected:  "
+
+            'Text des objects
+            GroupBoxChoixDuDossier.Text = "File selection"
+            LabelShowFolderName.Text = "Folder containing files:"
+            LabelShowSelectedFile.Text = "Selected files:"
+            RadioButtonAjoutSlide.Text = "Add slides"
+            RadioButtonAjoutTransitions.Text = "add transitions"
+            GroupBoxAjoutDeSlide.Text = "Adding slides"
+            GroupBoxAjoutDeTransition.Text = "Ading transtions"
+            LabelAttenteMain.Text = "Work in progress. Please wait"
+            LabelAttente.Text = "Wait while processing the source file"
             ButtonPickFile.Text = "Pick the file containing the slide to add"
             ButtonPickFolder.Text = "Pick the ppt to modify"
             ButtonExit.Text = "Quit"
             ButtonRun.Text = "Launch multiple addition"
             StartSlide.Text = "Add the slide at the start of the slide show"
             EndSlide.Text = "Add the slide at the end of the slide show"
-            Form2.IncludeSubFolder.Text = "Include subfolders"
+            LabelTBC.Text = "Coming soon ..."
+            LabelQuellesSlidesCopier.Text = "Add  all  slides  from                to"
+
+            'FORM2
+            With Form2
+                .IncludeSubFolder.Text = "Include subfolders"
+                .Text = "File selection"
+                .ButtonPickFolder.Text = "Pick the folfer containing the files"
+                .ButtonSelectAll.Text = "Select all"
+                .ButtonUnselectAll.Text = "Unselect all"
+                .ButtonCancel.Text = "Cancel"
+                .ButtonValider.Text = "Validate"
+                .LabelNombreDeFichier.Text = "Files selected: "
+            End With
+
+
         End If
     End Sub
 
@@ -89,7 +117,7 @@ Public Class Form1
             LabelAttente.Visible = True
             NbDeSlide = NbSlide(FicherPPTdeBASE)
             LabelAttente.Visible = False
-            LabelNbSlides.Text = "Ce fichier comprend " & NbDeSlide & " slides."
+            LabelNbSlides.Text = HowManySlide & " " & NbDeSlide & " slides."
             FromSlideNo = 1
             ToSlideNo = NbDeSlide
             For i = 1 To NbDeSlide
@@ -107,7 +135,7 @@ Public Class Form1
         Else
             MsgBox(NoSelectedFile)
             ButtonPickFile.Text = "Pour choisir de fichier source cliquer ici"
-            LabelNbSlides.Text = "Ce fichier comprend  X slides."
+            LabelNbSlides.Text = HowManySlide & " X slides."
             LabelNbSlides.Enabled = False
             LabelQuellesSlidesCopier.Enabled = False
             CBBoxDebutACopier.Enabled = False
@@ -157,6 +185,8 @@ Public Class Form1
             FromSlideNo = CBBoxDebutACopier.SelectedItem
         End If
     End Sub
+
+
     Function NbSlide(fichierACompter As String) As Integer
         'Start Powerpoint
         Dim PresDeBase As PowerPoint.Presentation

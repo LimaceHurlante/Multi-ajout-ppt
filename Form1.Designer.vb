@@ -29,9 +29,9 @@ Partial Class Form1
         Me.ButtonRun = New System.Windows.Forms.Button()
         Me.ButtonExit = New System.Windows.Forms.Button()
         Me.LabelCredits = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
+        Me.LabelShowFolderName = New System.Windows.Forms.Label()
         Me.LabelDossierDeTravail = New System.Windows.Forms.Label()
-        Me.Label4 = New System.Windows.Forms.Label()
+        Me.LabelShowSelectedFile = New System.Windows.Forms.Label()
         Me.LabelNombreDeFichier = New System.Windows.Forms.Label()
         Me.GroupBoxChoixDuDossier = New System.Windows.Forms.GroupBox()
         Me.GroupBoxAjoutDeSlide = New System.Windows.Forms.GroupBox()
@@ -43,7 +43,6 @@ Partial Class Form1
         Me.RadioButtonAjoutSlide = New System.Windows.Forms.RadioButton()
         Me.RadioButtonAjoutTransitions = New System.Windows.Forms.RadioButton()
         Me.GroupBoxAjoutDeTransition = New System.Windows.Forms.GroupBox()
-        Me.Button1 = New System.Windows.Forms.Button()
         Me.LabelTBC = New System.Windows.Forms.Label()
         Me.LabelAttenteMain = New System.Windows.Forms.Label()
         Me.GroupBoxChoixDuDossier.SuspendLayout()
@@ -118,15 +117,15 @@ Partial Class Form1
         Me.LabelCredits.TabIndex = 11
         Me.LabelCredits.Text = "?"
         '
-        'Label2
+        'LabelShowFolderName
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(6, 58)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(151, 13)
-        Me.Label2.TabIndex = 8
-        Me.Label2.Text = "Dossier contenant les fichiers :"
+        Me.LabelShowFolderName.AutoSize = True
+        Me.LabelShowFolderName.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelShowFolderName.Location = New System.Drawing.Point(6, 58)
+        Me.LabelShowFolderName.Name = "LabelShowFolderName"
+        Me.LabelShowFolderName.Size = New System.Drawing.Size(151, 13)
+        Me.LabelShowFolderName.TabIndex = 8
+        Me.LabelShowFolderName.Text = "Dossier contenant les fichiers :"
         '
         'LabelDossierDeTravail
         '
@@ -137,15 +136,15 @@ Partial Class Form1
         Me.LabelDossierDeTravail.TabIndex = 9
         Me.LabelDossierDeTravail.Text = "-"
         '
-        'Label4
+        'LabelShowSelectedFile
         '
-        Me.Label4.AutoSize = True
-        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(6, 90)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(105, 13)
-        Me.Label4.TabIndex = 10
-        Me.Label4.Text = "Fichiers selectionnés"
+        Me.LabelShowSelectedFile.AutoSize = True
+        Me.LabelShowSelectedFile.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelShowSelectedFile.Location = New System.Drawing.Point(6, 90)
+        Me.LabelShowSelectedFile.Name = "LabelShowSelectedFile"
+        Me.LabelShowSelectedFile.Size = New System.Drawing.Size(105, 13)
+        Me.LabelShowSelectedFile.TabIndex = 10
+        Me.LabelShowSelectedFile.Text = "Fichiers selectionnés"
         '
         'LabelNombreDeFichier
         '
@@ -159,9 +158,9 @@ Partial Class Form1
         'GroupBoxChoixDuDossier
         '
         Me.GroupBoxChoixDuDossier.Controls.Add(Me.LabelNombreDeFichier)
-        Me.GroupBoxChoixDuDossier.Controls.Add(Me.Label4)
+        Me.GroupBoxChoixDuDossier.Controls.Add(Me.LabelShowSelectedFile)
         Me.GroupBoxChoixDuDossier.Controls.Add(Me.LabelDossierDeTravail)
-        Me.GroupBoxChoixDuDossier.Controls.Add(Me.Label2)
+        Me.GroupBoxChoixDuDossier.Controls.Add(Me.LabelShowFolderName)
         Me.GroupBoxChoixDuDossier.Controls.Add(Me.ButtonPickFolder)
         Me.GroupBoxChoixDuDossier.Location = New System.Drawing.Point(12, 12)
         Me.GroupBoxChoixDuDossier.Name = "GroupBoxChoixDuDossier"
@@ -261,7 +260,6 @@ Partial Class Form1
         '
         'GroupBoxAjoutDeTransition
         '
-        Me.GroupBoxAjoutDeTransition.Controls.Add(Me.Button1)
         Me.GroupBoxAjoutDeTransition.Controls.Add(Me.LabelTBC)
         Me.GroupBoxAjoutDeTransition.Location = New System.Drawing.Point(302, 174)
         Me.GroupBoxAjoutDeTransition.Name = "GroupBoxAjoutDeTransition"
@@ -269,15 +267,6 @@ Partial Class Form1
         Me.GroupBoxAjoutDeTransition.TabIndex = 14
         Me.GroupBoxAjoutDeTransition.TabStop = False
         Me.GroupBoxAjoutDeTransition.Text = "Ajout de transitions"
-        '
-        'Button1
-        '
-        Me.Button1.Location = New System.Drawing.Point(97, 125)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(104, 23)
-        Me.Button1.TabIndex = 1
-        Me.Button1.Text = "Bouton de test"
-        Me.Button1.UseVisualStyleBackColor = True
         '
         'LabelTBC
         '
@@ -331,9 +320,9 @@ Partial Class Form1
     Friend WithEvents ButtonRun As Button
     Friend WithEvents ButtonExit As Button
     Friend WithEvents LabelCredits As Label
-    Friend WithEvents Label2 As Label
+    Friend WithEvents LabelShowFolderName As Label
     Friend WithEvents LabelDossierDeTravail As Label
-    Friend WithEvents Label4 As Label
+    Friend WithEvents LabelShowSelectedFile As Label
     Friend WithEvents LabelNombreDeFichier As Label
     Friend WithEvents GroupBoxChoixDuDossier As GroupBox
     Friend WithEvents GroupBoxAjoutDeSlide As GroupBox
@@ -346,6 +335,5 @@ Partial Class Form1
     Friend WithEvents CBBoxDebutACopier As ComboBox
     Friend WithEvents LabelAttente As Label
     Friend WithEvents LabelTBC As Label
-    Friend WithEvents Button1 As Button
     Friend WithEvents LabelAttenteMain As Label
 End Class

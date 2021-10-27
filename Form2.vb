@@ -1,6 +1,6 @@
 ﻿Public Class Form2
     Public DossierDeTravail As String = "", dossierSauvegarde As String, checklistSauvegardeItemName As ArrayList, checklistSauvegardeItemChecked As ArrayList
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Sub ButtonCancel_Click(sender As Object, e As EventArgs) Handles ButtonCancel.Click
         Me.Hide()
     End Sub
 
@@ -48,7 +48,7 @@
             If CheckedListBox.Items.Count > 0 Then
                 ButtonSelectAll.Enabled = True
                 ButtonUnselectAll.Enabled = True
-                LabelNombreDeFichier.Text = "Nombre de fichiers selectionné(s) : " & CheckedListBox.CheckedIndices.Count & "/" & CheckedListBox.Items.Count
+                LabelNombreDeFichier.Text = Form1.FileSelected & CheckedListBox.CheckedIndices.Count & "/" & CheckedListBox.Items.Count
             End If
         Else
             MsgBox(Form1.NoSelectedFolder)
@@ -71,7 +71,7 @@
         End If
     End Function
     Private Sub CheckedListBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CheckedListBox.SelectedIndexChanged
-        LabelNombreDeFichier.Text = "Nombre de fichiers selectionné(s) : " & CheckedListBox.CheckedIndices.Count & "/" & CheckedListBox.Items.Count
+        LabelNombreDeFichier.Text = Form1.FileSelected & CheckedListBox.CheckedIndices.Count & "/" & CheckedListBox.Items.Count
     End Sub
 
     Private Sub ButtonSelectAll_Click(sender As Object, e As EventArgs) Handles ButtonSelectAll.Click
@@ -87,7 +87,7 @@
     End Sub
 
     Private Sub CheckedListBox_ItemCheck(sender As Object, e As ItemCheckEventArgs) Handles CheckedListBox.ItemCheck
-        LabelNombreDeFichier.Text = "Nombre de fichiers selectionné(s) : " & CheckedListBox.CheckedIndices.Count & "/" & CheckedListBox.Items.Count
+        LabelNombreDeFichier.Text = Form1.FileSelected & CheckedListBox.CheckedIndices.Count & "/" & CheckedListBox.Items.Count
     End Sub
 
     Private Sub IncludeSubFolder_CheckedChanged(sender As Object, e As EventArgs) Handles IncludeSubFolder.CheckedChanged
@@ -111,7 +111,7 @@
     End Sub
 
     Private Sub CheckedListBox_ChangeUICues(sender As Object, e As UICuesEventArgs) Handles CheckedListBox.ChangeUICues
-        LabelNombreDeFichier.Text = "Nombre de fichiers selectionné(s) : " & CheckedListBox.CheckedIndices.Count & "/" & CheckedListBox.Items.Count
+        LabelNombreDeFichier.Text = Form1.FileSelected & CheckedListBox.CheckedIndices.Count & "/" & CheckedListBox.Items.Count
     End Sub
     Private Sub Form2_Shown(sender As Object, e As EventArgs) Handles Me.Shown
         If Not IsNothing(dossierSauvegarde) Then
