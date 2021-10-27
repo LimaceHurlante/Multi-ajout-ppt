@@ -22,7 +22,7 @@ Partial Class Form2
     'Ne la modifiez pas à l'aide de l'éditeur de code.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.ButtonCancel = New System.Windows.Forms.Button()
         Me.ButtonPickFolder = New System.Windows.Forms.Button()
         Me.CheckedListBox = New System.Windows.Forms.CheckedListBox()
         Me.LabelDirectoryName = New System.Windows.Forms.Label()
@@ -33,14 +33,14 @@ Partial Class Form2
         Me.IncludeSubFolder = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
-        'Button1
+        'ButtonCancel
         '
-        Me.Button1.Location = New System.Drawing.Point(12, 358)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(118, 29)
-        Me.Button1.TabIndex = 0
-        Me.Button1.Text = "Annuler"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.ButtonCancel.Location = New System.Drawing.Point(12, 358)
+        Me.ButtonCancel.Name = "ButtonCancel"
+        Me.ButtonCancel.Size = New System.Drawing.Size(118, 29)
+        Me.ButtonCancel.TabIndex = 0
+        Me.ButtonCancel.Text = "Annuler"
+        Me.ButtonCancel.UseVisualStyleBackColor = True
         '
         'ButtonPickFolder
         '
@@ -122,6 +122,7 @@ Partial Class Form2
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.BackColor = System.Drawing.SystemColors.Control
         Me.ClientSize = New System.Drawing.Size(788, 398)
         Me.Controls.Add(Me.IncludeSubFolder)
         Me.Controls.Add(Me.ButtonValider)
@@ -131,7 +132,7 @@ Partial Class Form2
         Me.Controls.Add(Me.LabelDirectoryName)
         Me.Controls.Add(Me.CheckedListBox)
         Me.Controls.Add(Me.ButtonPickFolder)
-        Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.ButtonCancel)
         Me.Name = "Form2"
         Me.Text = "Choix des fichiers"
         Me.ResumeLayout(False)
@@ -139,7 +140,7 @@ Partial Class Form2
 
     End Sub
 
-    Friend WithEvents Button1 As Button
+    Friend WithEvents ButtonCancel As Button
     Friend WithEvents ButtonPickFolder As Button
     Friend WithEvents CheckedListBox As CheckedListBox
     Friend WithEvents LabelDirectoryName As Label
