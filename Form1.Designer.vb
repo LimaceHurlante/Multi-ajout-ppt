@@ -35,6 +35,7 @@ Partial Class Form1
         Me.LabelNombreDeFichier = New System.Windows.Forms.Label()
         Me.GroupBoxChoixDuDossier = New System.Windows.Forms.GroupBox()
         Me.GroupBoxAjoutDeSlide = New System.Windows.Forms.GroupBox()
+        Me.ProgressBar = New System.Windows.Forms.ProgressBar()
         Me.LabelAttente = New System.Windows.Forms.Label()
         Me.CBBoxFinACopier = New System.Windows.Forms.ComboBox()
         Me.CBBoxDebutACopier = New System.Windows.Forms.ComboBox()
@@ -45,6 +46,7 @@ Partial Class Form1
         Me.GroupBoxAjoutDeTransition = New System.Windows.Forms.GroupBox()
         Me.LabelTBC = New System.Windows.Forms.Label()
         Me.LabelAttenteMain = New System.Windows.Forms.Label()
+        Me.LabelCompteEnCour = New System.Windows.Forms.Label()
         Me.GroupBoxChoixDuDossier.SuspendLayout()
         Me.GroupBoxAjoutDeSlide.SuspendLayout()
         Me.GroupBoxAjoutDeTransition.SuspendLayout()
@@ -186,6 +188,14 @@ Partial Class Form1
         Me.GroupBoxAjoutDeSlide.TabStop = False
         Me.GroupBoxAjoutDeSlide.Text = "Ajout de slides"
         '
+        'ProgressBar
+        '
+        Me.ProgressBar.Location = New System.Drawing.Point(21, 268)
+        Me.ProgressBar.Name = "ProgressBar"
+        Me.ProgressBar.Size = New System.Drawing.Size(269, 23)
+        Me.ProgressBar.TabIndex = 16
+        Me.ProgressBar.Visible = False
+        '
         'LabelAttente
         '
         Me.LabelAttente.AutoSize = True
@@ -286,11 +296,23 @@ Partial Class Form1
         Me.LabelAttenteMain.TabIndex = 15
         Me.LabelAttenteMain.Text = "Travail en cour merci de patienter"
         '
+        'LabelCompteEnCour
+        '
+        Me.LabelCompteEnCour.AutoSize = True
+        Me.LabelCompteEnCour.Location = New System.Drawing.Point(137, 302)
+        Me.LabelCompteEnCour.Name = "LabelCompteEnCour"
+        Me.LabelCompteEnCour.Size = New System.Drawing.Size(26, 13)
+        Me.LabelCompteEnCour.TabIndex = 17
+        Me.LabelCompteEnCour.Text = "X/X"
+        Me.LabelCompteEnCour.Visible = False
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(648, 411)
+        Me.Controls.Add(Me.LabelCompteEnCour)
+        Me.Controls.Add(Me.ProgressBar)
         Me.Controls.Add(Me.LabelAttenteMain)
         Me.Controls.Add(Me.GroupBoxAjoutDeTransition)
         Me.Controls.Add(Me.RadioButtonAjoutTransitions)
@@ -336,4 +358,6 @@ Partial Class Form1
     Friend WithEvents LabelAttente As Label
     Friend WithEvents LabelTBC As Label
     Friend WithEvents LabelAttenteMain As Label
+    Friend WithEvents ProgressBar As ProgressBar
+    Friend WithEvents LabelCompteEnCour As Label
 End Class

@@ -12,6 +12,7 @@ Public Class Form1
     'TO DO
     '-Faire un decompte des fichiers fait durant l'execution
     '-Bug si dossier trop grand selectionné !
+    '-Bug si fichier en lecture seul
 
     'CHARGEMENT DE L'AFFICHAGE
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -225,14 +226,27 @@ Public Class Form1
         GroupBoxAjoutDeSlide.Visible = False
         GroupBoxAjoutDeTransition.Visible = False
         LabelAttenteMain.Visible = True
+        With ProgressBar
+            .Visible = True
+            .Minimum = 0
+            .Maximum = Fichiers.Count
+            .Step = 1
+            .Value = 0
+        End With
+        LabelCompteEnCour.Visible = True
+
         PwP = New PowerPoint.Application
         For Each Fichier In Fichiers
+            LabelCompteEnCour.Text = ProgressBar.Value & "/" & Fichiers.Count
             Call OuvreAjouteSauveEtFerme(Fichier)
+            ProgressBar.PerformStep()
         Next Fichier
         PwP.Quit()
         PwP = Nothing
         GC.Collect()
         LabelAttenteMain.Visible = False
+        LabelCompteEnCour.Visible = False
+        ProgressBar.Visible = False
         GroupBoxAjoutDeSlide.Visible = True
         If MsgBox("Vos fichiers ont bien été modifié, souhaitez vous ouvrir le dossier et quitter ?", MsgBoxStyle.YesNo) = 6 Then
             Process.Start("explorer.exe", Form2.DossierDeTravail)
