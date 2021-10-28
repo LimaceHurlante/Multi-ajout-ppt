@@ -7,7 +7,7 @@ Public Class Form1
     Public FicherPPTdeBASE As String = "", Fichiers As New ArrayList(), FromSlideNo As Integer, ToSlideNo As Integer
     Public Shared PwP As PowerPoint.Application
     'Pour le texte en anglais
-    Public NoSelectedFile As String, ChoosePPTFile As String, FilterPPTFile As String, NoSelectedFolder As String, ChooseFolder As String, HowManySlide As String, FileSelected As String
+    Public NoSelectedFile As String, ChoosePPTFile As String, FilterPPTFile As String, NoSelectedFolder As String, ChooseFolder As String, HowManySlide As String, FileSelected As String, FilesToModify As String
 
     'TO DO
     '-Faire un decompte des fichiers fait durant l'execution
@@ -37,6 +37,7 @@ Public Class Form1
             ChooseFolder = "Selectionnez le dossier dans lequel se trouvent les ppt à modifer"
             HowManySlide = "Ce fichier contient"
             FileSelected = "Nombre de fichiers selectionné(s) : "
+            FilesToModify = "fichiers à modifier"
 
         Else
             'VARIABLES
@@ -47,6 +48,7 @@ Public Class Form1
             ChooseFolder = "Select the folder where the ppt to modify are located"
             HowManySlide = "This file contains"
             FileSelected = "Files selected:  "
+            FilesToModify = "files to modify"
 
             'Text des objects
             GroupBoxChoixDuDossier.Text = "File selection"
@@ -87,7 +89,7 @@ Public Class Form1
     Private Sub ButtonPickFolder_Click(sender As Object, e As EventArgs) Handles ButtonPickFolder.Click
         Form2.ShowDialog()
         LabelDossierDeTravail.Text = Form2.DossierDeTravail
-        LabelNombreDeFichier.Text = Fichiers.Count & " fichiers à modifier"
+        LabelNombreDeFichier.Text = Fichiers.Count & " " & FilesToModify
     End Sub
 
 
