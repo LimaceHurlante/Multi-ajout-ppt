@@ -12,3 +12,4 @@ Plus tard dans la V3 ...
 - Choix d'intercaler la slide ou l'on veux
 - Ajout de transitions
 - retour de la traduction en anglais
+- Suppretion de slides
