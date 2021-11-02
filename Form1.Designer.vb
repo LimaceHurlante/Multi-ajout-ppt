@@ -35,12 +35,12 @@ Partial Class Form1
         Me.LabelNombreDeFichier = New System.Windows.Forms.Label()
         Me.GroupBoxChoixDuDossier = New System.Windows.Forms.GroupBox()
         Me.GroupBoxAjoutDeSlide = New System.Windows.Forms.GroupBox()
-        Me.ProgressBar = New System.Windows.Forms.ProgressBar()
         Me.LabelAttente = New System.Windows.Forms.Label()
         Me.CBBoxFinACopier = New System.Windows.Forms.ComboBox()
         Me.CBBoxDebutACopier = New System.Windows.Forms.ComboBox()
         Me.LabelQuellesSlidesCopier = New System.Windows.Forms.Label()
         Me.LabelNbSlides = New System.Windows.Forms.Label()
+        Me.ProgressBar = New System.Windows.Forms.ProgressBar()
         Me.RadioButtonAjoutSlide = New System.Windows.Forms.RadioButton()
         Me.RadioButtonAjoutTransitions = New System.Windows.Forms.RadioButton()
         Me.GroupBoxAjoutDeTransition = New System.Windows.Forms.GroupBox()
@@ -188,14 +188,6 @@ Partial Class Form1
         Me.GroupBoxAjoutDeSlide.TabStop = False
         Me.GroupBoxAjoutDeSlide.Text = "Ajout de slides"
         '
-        'ProgressBar
-        '
-        Me.ProgressBar.Location = New System.Drawing.Point(21, 268)
-        Me.ProgressBar.Name = "ProgressBar"
-        Me.ProgressBar.Size = New System.Drawing.Size(269, 23)
-        Me.ProgressBar.TabIndex = 16
-        Me.ProgressBar.Visible = False
-        '
         'LabelAttente
         '
         Me.LabelAttente.AutoSize = True
@@ -245,6 +237,14 @@ Partial Class Form1
         Me.LabelNbSlides.Size = New System.Drawing.Size(131, 13)
         Me.LabelNbSlides.TabIndex = 4
         Me.LabelNbSlides.Text = "Ce fichier contient X slides"
+        '
+        'ProgressBar
+        '
+        Me.ProgressBar.Location = New System.Drawing.Point(21, 268)
+        Me.ProgressBar.Name = "ProgressBar"
+        Me.ProgressBar.Size = New System.Drawing.Size(269, 23)
+        Me.ProgressBar.TabIndex = 16
+        Me.ProgressBar.Visible = False
         '
         'RadioButtonAjoutSlide
         '

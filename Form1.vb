@@ -13,6 +13,7 @@ Public Class Form1
     '-Faire un decompte des fichiers fait durant l'execution
     '-Bug si dossier trop grand selectionné !
     '-Bug si fichier en lecture seul
+    '-bug de langage dans MiseAJourLabelNbDeSlidesSingulierPluriel
 
     'CHARGEMENT DE L'AFFICHAGE
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -171,6 +172,9 @@ Public Class Form1
             End If
         End If
     End Sub
+
+
+
     Private Sub CBBoxDebutACopier_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CBBoxDebutACopier.SelectedIndexChanged
         VerifEtMiseAJourDesVariableDebutEtFinDeSlideACopier()
         MiseAJourLabelNbDeSlidesSingulierPluriel()
